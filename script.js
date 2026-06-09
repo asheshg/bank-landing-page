@@ -126,18 +126,6 @@ document.querySelectorAll("form").forEach((form) => {
   form.addEventListener("submit", (event) => event.preventDefault());
 });
 
-document.querySelectorAll(".border-glow-card").forEach((card) => {
-  card.addEventListener("pointermove", (event) => {
-    const rect = card.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const dx = x - rect.width / 2;
-    const dy = y - rect.height / 2;
-    const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
-    card.style.setProperty("--cursor-angle", `${angle < 0 ? angle + 360 : angle}deg`);
-  });
-});
-
 const auroraCanvas = document.querySelector(".aurora-canvas");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
