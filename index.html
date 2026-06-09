@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SBI Web Home Experience</title>
+    <meta name="description" content="Editable recreation of the published Figma Site SBI home experience.">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="ticker" aria-label="Announcements">
+        <div class="ticker-track">
+          <span>Education loans up to Rs. 1.5 Cr - apply online in minutes</span>
+          <span>RBI advisory - never share OTP or PIN with anyone</span>
+          <span>Meet SBI Saathi - your AI assistant in 12+ Indian languages</span>
+          <span>FD rates revised: senior citizens earn up to 7.50% p.a.</span>
+          <span>YONO 3.0 is here - refreshed design, faster experience</span>
+          <span>PM Vishwakarma loans now available at all SBI branches</span>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <div class="wrap nav-inner">
+          <a class="brand" href="#" aria-label="SBI home">
+            <img class="brand-square" src="assets/sbi-mark-square.png" alt="" aria-hidden="true">
+            <img class="brand-full" src="assets/sbi-logo-full.png" alt="" aria-hidden="true">
+          </a>
+          <form class="search" role="search">
+            <img class="search-logo" src="assets/sbi-logo.png" alt="" aria-hidden="true">
+            <input placeholder="Ask SBI Saathi..." aria-label="Ask SBI Saathi">
+            <button type="submit"><i data-lucide="sparkles" aria-hidden="true"></i><span>Ask</span></button>
+            <button class="header-voice icon-button" type="button" aria-label="Use voice search"><i data-lucide="mic" aria-hidden="true"></i></button>
+            <div class="header-prompts" aria-label="Suggested AI prompts">
+              <button type="button">How to open a savings account?</button>
+              <button type="button">Show nearest SBI branch</button>
+              <button type="button">Is this SMS a fraud?</button>
+              <button type="button">Help me fill loan application</button>
+            </div>
+          </form>
+          <div class="auth-actions desktop-only">
+            <button class="auth-cta login-cta" type="button"><i data-lucide="log-in" aria-hidden="true"></i>Login</button>
+            <button class="auth-cta signup-cta" type="button"><i data-lucide="user-plus" aria-hidden="true"></i>Sign Up</button>
+          </div>
+          <div class="language-menu desktop-only">
+            <button class="language" type="button" aria-expanded="false">
+              <i data-lucide="languages" aria-hidden="true"></i>
+              English
+            </button>
+            <div class="language-panel" aria-label="Choose language">
+              <a href="#">Hindi</a>
+              <a href="#">Tamil</a>
+              <a href="#">Telugu</a>
+              <a href="#">Bengali</a>
+              <a href="#">Marathi</a>
+              <a href="#">Gujarati</a>
+              <a href="#">Kannada</a>
+              <a href="#">Malayalam</a>
+              <a href="#">Punjabi</a>
+              <a href="#">Urdu</a>
+            </div>
+          </div>
+          <button class="menu-button icon-button" type="button" aria-label="Open menu"><i data-lucide="menu" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <nav class="secondary-header" aria-label="Secondary navigation">
+        <div class="wrap secondary-inner">
+          <div class="nav-menu explore-menu">
+            <button class="secondary-link explore-link secondary-menu-button" type="button" aria-expanded="false">
+              <i data-lucide="building-2" aria-hidden="true"></i>Explore SBI
+            </button>
+            <div class="explore-panel" aria-label="Explore SBI menu">
+              <section>
+                <h3>Banking</h3>
+                <a href="#"><b>Personal Accounts</b><span>Savings, salary & current</span></a>
+                <a href="#"><b>Cards</b><span>Credit & debit cards</span></a>
+                <a href="#"><b>Deposits</b><span>FD, RD & tax saver</span></a>
+              </section>
+              <section>
+                <h3>Loans</h3>
+                <a href="#"><b>Education Loans</b><span>Study in India & abroad</span></a>
+                <a href="#"><b>Home Loans</b><span>Buy, build or renovate</span></a>
+                <a href="#"><b>Personal Loans</b><span>Funds for any need</span></a>
+              </section>
+              <section>
+                <h3>Invest & Insure</h3>
+                <a href="#"><b>Investments</b><span>Mutual funds & bonds</span></a>
+                <a href="#"><b>Insurance</b><span>Life, health & general</span></a>
+                <a href="#"><b>International</b><span>Forex & travel</span></a>
+              </section>
+              <section>
+                <h3>Support</h3>
+                <a href="#"><b>Customer Care</b><span>24x7 helpline & chat</span></a>
+                <a href="#"><b>Find Branch / ATM</b><span>Locate nearest SBI</span></a>
+                <a href="#"><b>Forms & Downloads</b><span>Brochures & checklists</span></a>
+              </section>
+            </div>
+          </div>
+          <div class="nav-menu quick-menu">
+            <button class="secondary-link secondary-menu-button" type="button" aria-expanded="false">
+              <i data-lucide="layout-grid" aria-hidden="true"></i>Quick Links
+            </button>
+            <div class="quick-card-panel" aria-label="Quick links menu">
+              <article class="nav-card accounts-card">
+                <h3>Accounts</h3>
+                <a href="#" aria-label="Savings account">Savings</a>
+                <a href="#" aria-label="Salary account">Salary</a>
+                <a href="#" aria-label="Current account">Current</a>
+                <a href="#" aria-label="Junior and Pehla Kadam account">Junior / Pehla Kadam</a>
+              </article>
+              <article class="nav-card loans-card">
+                <h3>Loans</h3>
+                <a href="#" aria-label="Home loan">Home Loan</a>
+                <a href="#" aria-label="Personal loan">Personal Loan</a>
+                <a href="#" aria-label="Car loan">Car Loan</a>
+                <a href="#" aria-label="Kisan and MUDRA loans">Kisan / MUDRA</a>
+              </article>
+              <article class="nav-card digital-card">
+                <h3>Digital Banking</h3>
+                <a href="#" aria-label="YONO app">YONO App</a>
+                <a href="#" aria-label="Internet banking">Internet Banking</a>
+                <a href="#" aria-label="UPI services">UPI</a>
+                <a href="#" aria-label="WhatsApp banking">WhatsApp Banking</a>
+              </article>
+              <article class="nav-card cards-card">
+                <h3>Cards</h3>
+                <a href="#">Credit Cards</a>
+                <a href="#">Debit Cards</a>
+                <a href="#">Forex Cards</a>
+                <a href="#">Prepaid</a>
+              </article>
+              <article class="nav-card invest-card">
+                <h3>Investments</h3>
+                <a href="#">Fixed Deposits</a>
+                <a href="#">Recurring Deposits</a>
+                <a href="#">Mutual Funds</a>
+                <a href="#">SGB</a>
+              </article>
+              <article class="nav-card nri-card">
+                <h3>NRI Services</h3>
+                <a href="#">NRE / NRO</a>
+                <a href="#">Remittance</a>
+                <a href="#">Investments</a>
+                <a href="#">Tax & DTAA</a>
+              </article>
+              <article class="nav-card care-card">
+                <h3>Customer Care</h3>
+                <a href="#">Toll-free Numbers</a>
+                <a href="#">Email Us</a>
+                <a href="#">Branch Locator</a>
+                <a href="#">Complaints</a>
+              </article>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="mobile-menu" hidden>
+        <div class="mobile-auth">
+          <button class="login-cta" type="button">Login</button>
+          <button class="signup-cta" type="button">Sign Up</button>
+        </div>
+        <a href="#">Explore SBI</a>
+        <a href="#">Personal Accounts</a>
+        <a href="#">Education Loans</a>
+        <a href="#">Home Loans</a>
+        <a href="#">Personal Loans</a>
+        <a href="#">YONO App</a>
+        <a href="#">Internet Banking</a>
+        <a href="#">Find Branch / ATM</a>
+        <a href="#">Forms & Downloads</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Featured SBI services">
+        <article class="hero-slide active" data-slide="0">
+          <img src="assets/education-hero.jpeg" alt="Students celebrating their educational journey">
+          <div class="hero-copy">
+            <p class="eyebrow">Education Loans</p>
+            <h1>Fund your education <span>SBI</span>.</h1>
+            <p>Compare schemes, check eligibility, calculate EMI and apply - guided every step of the way by an experience built around your decision.</p>
+            <div class="actions">
+              <a class="primary" href="#">Check Eligibility</a>
+              <a class="secondary" href="#">Compare Loan Schemes</a>
+            </div>
+            <div class="stats">
+              <strong>Rs. 1.5 Cr<small>Max loan amount</small></strong>
+              <strong>15 yrs<small>Repayment tenure</small></strong>
+              <strong>8.20%<small>Starting rate</small></strong>
+            </div>
+          </div>
+        </article>
+        <article class="hero-slide" data-slide="1">
+          <img src="assets/home-hero.jpg" alt="Indian family at home">
+          <div class="hero-copy">
+            <p class="eyebrow">Home Loans</p>
+            <h1>Buy your dream home <span>with SBI</span>.</h1>
+            <p>Lowest interest rates, doorstep service and approvals in days - whether you're building, buying or renovating.</p>
+            <div class="actions"><a class="primary" href="#">Apply Now</a><a class="secondary" href="#">EMI Calculator</a></div>
+            <div class="stats"><strong>8.50%<small>Starting rate</small></strong><strong>30 yrs<small>Tenure</small></strong><strong>Rs. 0<small>Processing fee</small></strong></div>
+          </div>
+        </article>
+        <article class="hero-slide" data-slide="2">
+          <img src="assets/business-hero.jpg" alt="Small business owner smiling">
+          <div class="hero-copy">
+            <p class="eyebrow">MSME & Business</p>
+            <h1>Grow your business <span>with SBI</span>.</h1>
+            <p>Collateral-free working capital, term loans and MUDRA finance designed for India's small businesses and entrepreneurs.</p>
+            <div class="actions"><a class="primary" href="#">Explore MSME Loans</a><a class="secondary" href="#">Talk to an Expert</a></div>
+            <div class="stats"><strong>Rs. 10 L<small>MUDRA loan</small></strong><strong>48 hrs<small>Quick sanction</small></strong><strong>Zero<small>Collateral</small></strong></div>
+          </div>
+        </article>
+        <div class="dots" aria-label="Choose hero slide">
+          <button class="active" type="button" data-go-slide="0" aria-label="Go to slide 1"></button>
+          <button type="button" data-go-slide="1" aria-label="Go to slide 2"></button>
+          <button type="button" data-go-slide="2" aria-label="Go to slide 3"></button>
+        </div>
+      </section>
+
+      <section class="saathi wrap">
+        <div class="saathi-copy">
+          <h2>Meet SBI Saathi - your banking assistant</h2>
+          <p>Type, speak, or tap a common question. Saathi understands 12+ Indian languages and helps you bank with confidence.</p>
+          <div class="prompt-row ai-search-row">
+            <img src="assets/sbi-logo.png" alt="" aria-hidden="true">
+            <input placeholder="Ask anything in your language...">
+            <button type="button"><i data-lucide="sparkles" aria-hidden="true"></i>Ask</button>
+          </div>
+          <div class="chips">
+            <button>Mujhe kisan loan chahiye, kaise milega?</button>
+            <button>How to open a savings account?</button>
+            <button>Show nearest SBI branch</button>
+            <button>Is this SMS a fraud?</button>
+          </div>
+          <small>AI guidance is for help only. Please confirm final terms with SBI.</small>
+        </div>
+      </section>
+
+      <section class="visit-choice wrap" aria-label="Visitor type">
+        <div class="visit-segment" role="group" aria-label="Choose visitor type">
+          <button class="selected" type="button">I am visiting this website for the first time</button>
+          <button type="button">I have visited this website before</button>
+        </div>
+      </section>
+
+      <section class="schemes wrap">
+        <div class="section-head">
+          <div>
+            <h2>Government schemes made simple</h2>
+            <p>Explore benefits you may be eligible for - explained in your language.</p>
+          </div>
+        </div>
+        <div class="scheme-grid" data-scheme-grid>
+          <article class="cutout-card" data-scheme="PM Jan Dhan Yojana" data-detail="Rs. 2 lakh accident cover plus RuPay debit card">
+            <div class="scheme-media"><img src="assets/jan-dhan.jpg" alt="PM Jan Dhan Yojana"><span>Eligibility - All citizens</span></div>
+            <div class="scheme-body"><h3>PM Jan Dhan Yojana</h3><p>Zero-balance savings account for every Indian.</p><button type="button">Learn more</button></div>
+          </article>
+          <article class="cutout-card" data-scheme="PM Kisan Samman Nidhi" data-detail="Rs. 6,000 per year in 3 equal instalments">
+            <div class="scheme-media"><img src="assets/pm-kisan.jpg" alt="PM Kisan Samman Nidhi"><span>Eligibility - Land-owning farmers</span></div>
+            <div class="scheme-body"><h3>PM Kisan Samman Nidhi</h3><p>Rs. 6,000/year income support for farmer families.</p><button type="button">Learn more</button></div>
+          </article>
+          <article class="cutout-card" data-scheme="MUDRA Loan" data-detail="Collateral-free loans from Rs. 50,000 to Rs. 10 lakh">
+            <div class="scheme-media"><img src="assets/mudra.jpg" alt="MUDRA Loan"><span>Eligibility - Micro enterprises</span></div>
+            <div class="scheme-body"><h3>MUDRA Loan</h3><p>Collateral-free loans up to Rs. 10 lakh for small business.</p><button type="button">Learn more</button></div>
+          </article>
+          <article class="cutout-card extra-scheme" data-scheme="Atal Pension Yojana" data-detail="Guaranteed pension from Rs. 1,000 to Rs. 5,000 per month after 60.">
+            <div class="scheme-media"><img src="assets/jan-dhan.jpg" alt="Atal Pension Yojana"><span>Eligibility - Age 18-40</span></div>
+            <div class="scheme-body"><h3>Atal Pension Yojana</h3><p>Guaranteed pension after 60, starting Rs. 42/month.</p><button type="button">Learn more</button></div>
+          </article>
+          <article class="cutout-card extra-scheme" data-scheme="Sukanya Samriddhi" data-detail="High-interest savings for the girl child with tax-free maturity.">
+            <div class="scheme-media"><img src="assets/pm-kisan.jpg" alt="Sukanya Samriddhi"><span>Eligibility - Girls below 10</span></div>
+            <div class="scheme-body"><h3>Sukanya Samriddhi</h3><p>High-interest savings scheme for the girl child.</p><button type="button">Learn more</button></div>
+          </article>
+          <article class="cutout-card extra-scheme" data-scheme="PMSBY / PMJJBY" data-detail="Life and accident insurance cover up to Rs. 2 lakh.">
+            <div class="scheme-media"><img src="assets/mudra.jpg" alt="PMSBY and PMJJBY"><span>Eligibility - Age 18-70</span></div>
+            <div class="scheme-body"><h3>PMSBY / PMJJBY</h3><p>Life and accident insurance from just Rs. 20/year.</p><button type="button">Learn more</button></div>
+          </article>
+          <article class="cutout-card extra-scheme" data-scheme="Stand-Up India" data-detail="Composite loans from Rs. 10 lakh to Rs. 1 crore for eligible entrepreneurs.">
+            <div class="scheme-media"><img src="assets/business-hero.jpg" alt="Stand-Up India"><span>Eligibility - First-time entrepreneurs</span></div>
+            <div class="scheme-body"><h3>Stand-Up India</h3><p>Loans for SC/ST and women entrepreneurs.</p><button type="button">Learn more</button></div>
+          </article>
+        </div>
+        <div class="scheme-actions"><button class="scheme-toggle" type="button" data-scheme-toggle><span>View more</span><i data-lucide="chevron-down" aria-hidden="true"></i></button></div>
+      </section>
+
+      <section class="locator wrap">
+        <div class="locator-copy">
+          <h2>Find SBI near you</h2>
+          <p>Branches, ATMs and Customer Service Points across India.</p>
+          <div class="locator-tabs">
+            <button class="active" type="button"><i data-lucide="building-2" aria-hidden="true"></i>Branch</button>
+            <button type="button"><i data-lucide="landmark" aria-hidden="true"></i>ATM</button>
+            <button type="button"><i data-lucide="map-pin" aria-hidden="true"></i>CSP</button>
+            <button type="button"><i data-lucide="archive" aria-hidden="true"></i>Locker</button>
+          </div>
+          <div class="locator-search"><input placeholder="Enter village, town, city or PIN code"><button><i data-lucide="search" aria-hidden="true"></i>Search</button></div>
+          <div class="nearest"><b>Nearest branch in your area is 1.2 km away</b><small>MG Road Branch, Bengaluru - Open until 4:00 PM</small></div>
+        </div>
+        <div class="map-card city-map" aria-label="Sample Indian city map">
+          <span class="road main-road"></span>
+          <span class="road ring-road"></span>
+          <span class="road cross-road"></span>
+          <span class="water-body"></span>
+          <span class="park"></span>
+          <span class="pin branch" style="--top:24%;--left:34%">Branch</span>
+          <span class="pin atm" style="--top:54%;--left:58%">ATM</span>
+          <span class="pin locker" style="--top:72%;--left:28%">Locker</span>
+          <span class="pin branch" style="--top:34%;--left:74%">Branch</span>
+          <small>Bengaluru sample map - 22,000+ touchpoints across India</small>
+        </div>
+      </section>
+
+      <section class="learning wrap">
+        <article class="why why-sbi">
+          <div class="why-copy">
+            <h3>Why SBI</h3>
+            <p>Trusted by Bharat, built for every Indian.</p>
+            <div class="mini-stats"><b>220+<small>Years of trust</small></b><b>50 Cr+<small>Customers served</small></b><b>22,000+<small>Branches</small></b><b>65,000+<small>ATMs & CSPs</small></b></div>
+            <blockquote>"From my village to my smartphone - SBI has always been there."<span>- Lakshmi, Madurai</span></blockquote>
+          </div>
+          <div class="sbi-ring-art" aria-hidden="true"><span></span></div>
+        </article>
+      </section>
+
+      <section class="yono">
+        <img src="assets/yono-wallpaper.png" alt="Every tap feels personal - customised banking experience with curated products and offers">
+      </section>
+
+      <section class="faq wrap">
+        <h2>Frequently asked questions</h2>
+        <details open><summary>How do I open a bank account?</summary><p>You can start online or visit a branch with identity proof, address proof, PAN or Form 60, and a recent photograph.</p></details>
+        <details><summary>What should I do if my card is lost?</summary><p>Block the card immediately through mobile banking, internet banking, customer care, or your nearest branch, then request a replacement.</p></details>
+        <details><summary>How can I reset internet banking access?</summary><p>Use the bank's official online banking portal to reset your password, or visit a branch if additional verification is needed.</p></details>
+        <details><summary>How do I report an unauthorised transaction?</summary><p>Report it to the bank as soon as possible through official customer care, mobile banking, or a branch, and keep the complaint reference number.</p></details>
+      </section>
+
+      <section class="help">
+        <canvas class="aurora-canvas" aria-hidden="true"></canvas>
+        <div class="wrap">
+          <div class="section-title"><h2>Need help? We're here.</h2><p>Real people. Trusted answers. Available across India.</p></div>
+          <div class="help-grid">
+            <article><h3>Talk to a Branch Officer</h3><p>Book a slot at your nearest branch.</p></article>
+            <article><h3>Request a Callback</h3><p>We'll call you in your preferred language.</p></article>
+            <article><h3>Chat with SBI Saathi</h3><p>Get answers instantly, anytime.</p></article>
+            <article><h3>Visit a Branch / CSP</h3><p>Find a location closest to you.</p></article>
+            <article><h3>Customer Care</h3><p>1800 1234 / 1800 2100 (toll-free)</p></article>
+            <article><h3>Email Support</h3><p>customercare@sbi.co.in</p></article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-grid">
+        <div>
+          <div class="footer-brand"><img src="assets/sbi-logo.png" alt="SBI"><span>State Bank of India<small>The Banker to Every Indian</small></span></div>
+          <p>Serving 50+ crore Indians across 22,000+ branches, ATMs and Customer Service Points - built on 220+ years of trust.</p>
+        </div>
+        <div class="footer-links">
+          <div><h3>About SBI</h3><a>Overview</a><a>Investor Relations</a><a>Careers</a><a>Press Releases</a></div>
+          <div><h3>Policies</h3><a>Privacy Policy</a><a>Terms & Conditions</a><a>Cookie Policy</a></div>
+          <div><h3>Security</h3><a>Fraud Awareness</a><a>Grievance Redressal</a><a>RBI Disclosures</a></div>
+          <div><h3>Accessibility</h3><a>Lite Mode</a><a>Sign Language Support</a><a>Screen-reader Help</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <dialog class="scheme-dialog">
+      <button class="close-dialog" type="button" aria-label="Close">Close</button>
+      <h2></h2>
+      <p></p>
+      <ul>
+        <li>No minimum balance or collateral where applicable</li>
+        <li>Simple documentation and SBI branch support</li>
+        <li>Ask SBI Saathi for eligibility guidance</li>
+      </ul>
+      <a class="primary" href="#">Apply</a>
+    </dialog>
+
+    <button class="floating" type="button" aria-label="Open SBI Saathi"><span class="fab-icon"><i data-lucide="bot" aria-hidden="true"></i></span><span class="fab-text">Ask SBI Saathi</span></button>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
