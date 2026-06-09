@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Atal Pension Yojana illustration</title>
+  <desc id="desc">Retirement pension planning with calendar and steady income symbols.</desc>
+  <rect width="640" height="420" fill="#673391"/>
+  <circle cx="504" cy="92" r="114" fill="#13A8D5" opacity=".22"/>
+  <circle cx="92" cy="344" r="132" fill="#EC7116" opacity=".2"/>
+  <rect x="84" y="88" width="238" height="250" rx="24" fill="#fff"/>
+  <rect x="84" y="88" width="238" height="62" rx="24" fill="#5553AA"/>
+  <path d="M84 126h238" stroke="#5553AA" stroke-width="48"/>
+  <circle cx="142" cy="182" r="18" fill="#EEEef6"/>
+  <circle cx="202" cy="182" r="18" fill="#EEEef6"/>
+  <circle cx="262" cy="182" r="18" fill="#EEEef6"/>
+  <rect x="124" y="232" width="160" height="18" rx="9" fill="#673391" opacity=".22"/>
+  <rect x="124" y="272" width="112" height="18" rx="9" fill="#673391" opacity=".22"/>
+  <path d="M412 156c-44 0-80 36-80 80v76h160v-76c0-44-36-80-80-80Z" fill="#fff"/>
+  <circle cx="412" cy="128" r="44" fill="#fff"/>
+  <path d="M356 268h112" stroke="#2F7F15" stroke-width="18" stroke-linecap="round"/>
+  <path d="M386 232h52" stroke="#2F7F15" stroke-width="16" stroke-linecap="round"/>
+  <path d="M488 92a42 42 0 1 0 0 84 42 42 0 0 0 0-84Zm0 22a20 20 0 1 1 0 40 20 20 0 0 1 0-40Z" fill="#13A8D5"/>
+  <rect x="484" y="144" width="9" height="54" rx="4.5" fill="#13A8D5"/>
+</svg>

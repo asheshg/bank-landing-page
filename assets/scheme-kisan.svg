@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">PM Kisan farming illustration</title>
+  <desc id="desc">Fields, crops and direct benefit transfer symbols.</desc>
+  <rect width="640" height="420" fill="#F7F7F7"/>
+  <path d="M0 270c120-56 232-54 336-6 94 44 190 58 304 8v148H0Z" fill="#2F7F15" opacity=".85"/>
+  <path d="M0 324c148-64 294-62 438 0 70 30 136 34 202 12v84H0Z" fill="#2F7F15"/>
+  <circle cx="528" cy="92" r="72" fill="#EC7116" opacity=".9"/>
+  <path d="M74 284h492" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".48"/>
+  <path d="M112 332h402" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".34"/>
+  <rect x="92" y="88" width="212" height="132" rx="22" fill="#fff"/>
+  <path d="M122 180c36-46 82-56 136-16" fill="none" stroke="#2F7F15" stroke-width="14" stroke-linecap="round"/>
+  <path d="M182 154c0-36 22-58 58-64-2 38-22 60-58 64Z" fill="#2F7F15"/>
+  <path d="M166 160c-34-8-52-30-56-64 36 4 56 26 56 64Z" fill="#2F7F15" opacity=".78"/>
+  <rect x="364" y="150" width="178" height="110" rx="20" fill="#673391"/>
+  <rect x="386" y="182" width="72" height="14" rx="7" fill="#fff" opacity=".76"/>
+  <rect x="386" y="214" width="114" height="14" rx="7" fill="#fff" opacity=".42"/>
+  <path d="M504 72a42 42 0 1 0 0 84 42 42 0 0 0 0-84Zm0 22a20 20 0 1 1 0 40 20 20 0 0 1 0-40Z" fill="#13A8D5"/>
+  <rect x="500" y="124" width="9" height="54" rx="4.5" fill="#13A8D5"/>
+</svg>

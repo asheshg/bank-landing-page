@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Jan Dhan account illustration</title>
+  <desc id="desc">A savings passbook, RuPay card and family banking symbols.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#673391"/>
+      <stop offset="1" stop-color="#5553AA"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#13A8D5"/>
+      <stop offset="1" stop-color="#B22382"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" fill="url(#bg)"/>
+  <circle cx="536" cy="84" r="112" fill="#13A8D5" opacity=".24"/>
+  <circle cx="98" cy="344" r="128" fill="#B22382" opacity=".26"/>
+  <rect x="76" y="94" width="278" height="230" rx="24" fill="#fff"/>
+  <rect x="102" y="130" width="226" height="28" rx="14" fill="#EEEef6"/>
+  <rect x="102" y="180" width="164" height="16" rx="8" fill="#673391" opacity=".2"/>
+  <rect x="102" y="212" width="202" height="16" rx="8" fill="#673391" opacity=".2"/>
+  <rect x="102" y="244" width="126" height="16" rx="8" fill="#673391" opacity=".2"/>
+  <path d="M276 312h-74a48 48 0 0 1 74 0Z" fill="#13A8D5"/>
+  <circle cx="239" cy="258" r="28" fill="#13A8D5"/>
+  <rect x="284" y="178" width="246" height="148" rx="22" fill="url(#card)" transform="rotate(-8 407 252)"/>
+  <rect x="318" y="222" width="92" height="16" rx="8" fill="#fff" opacity=".78" transform="rotate(-8 364 230)"/>
+  <rect x="318" y="256" width="152" height="16" rx="8" fill="#fff" opacity=".42" transform="rotate(-8 394 264)"/>
+  <circle cx="470" cy="218" r="28" fill="#fff" opacity=".24"/>
+  <path d="M486 82a52 52 0 1 0 0 104 52 52 0 0 0 0-104Zm0 28a24 24 0 1 1 0 48 24 24 0 0 1 0-48Z" fill="#13A8D5"/>
+  <rect x="480" y="134" width="12" height="66" rx="6" fill="#13A8D5"/>
+</svg>

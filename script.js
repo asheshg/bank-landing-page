@@ -70,9 +70,15 @@ if (faqSection && faqToggle) {
 document.querySelectorAll(".scheme-grid article .learn-link").forEach((button) => {
   button.addEventListener("click", () => {
     const card = button.closest("article");
+    const cardImage = card.querySelector(".scheme-media img");
+    const dialogImage = dialog.querySelector(".scheme-dialog-media img");
     dialog.querySelector("h2").textContent = card.dataset.scheme;
     dialog.querySelector(".scheme-detail").textContent = card.dataset.detail;
     dialog.querySelector(".scheme-summary").textContent = card.dataset.summary;
+    if (cardImage && dialogImage) {
+      dialogImage.src = cardImage.currentSrc || cardImage.src;
+      dialogImage.alt = cardImage.alt;
+    }
     const highlights = dialog.querySelector(".scheme-highlights");
     highlights.innerHTML = "";
     (card.dataset.highlights || "").split("|").filter(Boolean).forEach((item) => {

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Insurance scheme illustration</title>
+  <desc id="desc">A protective shield and family cover for PMSBY and PMJJBY.</desc>
+  <rect width="640" height="420" fill="#EEEef6"/>
+  <circle cx="500" cy="98" r="124" fill="#5553AA" opacity=".22"/>
+  <circle cx="98" cy="332" r="124" fill="#13A8D5" opacity=".22"/>
+  <path d="M320 66 500 132v106c0 86-58 144-180 176-122-32-180-90-180-176V132Z" fill="#673391"/>
+  <path d="M320 104 458 154v80c0 64-42 108-138 136-96-28-138-72-138-136v-80Z" fill="#fff" opacity=".96"/>
+  <circle cx="284" cy="224" r="34" fill="#13A8D5"/>
+  <circle cx="362" cy="224" r="34" fill="#B22382"/>
+  <path d="M220 314c18-46 48-70 88-70s70 24 88 70" fill="#13A8D5"/>
+  <path d="M298 314c18-46 48-70 88-70s70 24 88 70" fill="#B22382"/>
+  <path d="m270 188 38 38 84-92" fill="none" stroke="#2F7F15" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M504 64a42 42 0 1 0 0 84 42 42 0 0 0 0-84Zm0 22a20 20 0 1 1 0 40 20 20 0 0 1 0-40Z" fill="#13A8D5"/>
+  <rect x="500" y="116" width="9" height="54" rx="4.5" fill="#13A8D5"/>
+</svg>

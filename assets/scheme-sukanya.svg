@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Sukanya Samriddhi education savings illustration</title>
+  <desc id="desc">A girl child education savings theme with books, a coin and growth symbols.</desc>
+  <rect width="640" height="420" fill="#F7F7F7"/>
+  <path d="M0 0h640v210H0Z" fill="#B22382"/>
+  <circle cx="92" cy="86" r="94" fill="#EC7116" opacity=".22"/>
+  <circle cx="546" cy="154" r="118" fill="#13A8D5" opacity=".2"/>
+  <rect x="98" y="150" width="204" height="178" rx="22" fill="#fff"/>
+  <path d="M132 284h136" stroke="#673391" stroke-width="18" stroke-linecap="round" opacity=".22"/>
+  <path d="M132 244h94" stroke="#673391" stroke-width="18" stroke-linecap="round" opacity=".22"/>
+  <path d="M178 146c0-34 22-58 56-62 0 38-20 60-56 62Z" fill="#2F7F15"/>
+  <circle cx="390" cy="224" r="82" fill="#fff"/>
+  <circle cx="390" cy="194" r="36" fill="#673391"/>
+  <path d="M324 312c18-52 48-78 90-78s72 26 90 78" fill="#673391"/>
+  <rect x="348" y="300" width="178" height="42" rx="12" fill="#5553AA"/>
+  <rect x="372" y="276" width="178" height="42" rx="12" fill="#13A8D5"/>
+  <path d="M512 86a42 42 0 1 0 0 84 42 42 0 0 0 0-84Zm0 22a20 20 0 1 1 0 40 20 20 0 0 1 0-40Z" fill="#13A8D5"/>
+  <rect x="508" y="138" width="9" height="54" rx="4.5" fill="#13A8D5"/>
+</svg>
