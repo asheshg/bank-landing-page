@@ -55,11 +55,19 @@ schemeToggles.forEach((button) => {
   button.addEventListener("click", () => setSchemesExpanded(!schemeSection.classList.contains("expanded")));
 });
 
-document.querySelectorAll(".scheme-grid article button").forEach((button) => {
+document.querySelectorAll(".scheme-grid article .learn-link").forEach((button) => {
   button.addEventListener("click", () => {
     const card = button.closest("article");
     dialog.querySelector("h2").textContent = card.dataset.scheme;
-    dialog.querySelector("p").textContent = card.dataset.detail;
+    dialog.querySelector(".scheme-detail").textContent = card.dataset.detail;
+    dialog.querySelector(".scheme-summary").textContent = card.dataset.summary;
+    const highlights = dialog.querySelector(".scheme-highlights");
+    highlights.innerHTML = "";
+    (card.dataset.highlights || "").split("|").filter(Boolean).forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      highlights.appendChild(li);
+    });
     dialog.showModal();
   });
 });
@@ -72,7 +80,7 @@ menuButton.addEventListener("click", () => {
   mobileMenu.hidden = !mobileMenu.hidden;
 });
 
-const dropdowns = [...document.querySelectorAll(".nav-menu, .language-menu")];
+const dropdowns = [...document.querySelectorAll(".language-menu")];
 dropdowns.forEach((dropdown) => {
   const button = dropdown.querySelector("button");
   button.addEventListener("click", (event) => {
@@ -87,6 +95,10 @@ dropdowns.forEach((dropdown) => {
       }
     });
   });
+});
+
+document.querySelectorAll(".nav-menu > button").forEach((button) => {
+  button.addEventListener("click", () => button.blur());
 });
 
 document.addEventListener("click", (event) => {
