@@ -55,6 +55,18 @@ schemeToggles.forEach((button) => {
   button.addEventListener("click", () => setSchemesExpanded(!schemeSection.classList.contains("expanded")));
 });
 
+const faqSection = document.querySelector(".faq");
+const faqToggle = document.querySelector("[data-faq-toggle]");
+
+if (faqSection && faqToggle) {
+  faqToggle.addEventListener("click", () => {
+    const expanded = faqSection.classList.toggle("expanded");
+    const label = faqToggle.querySelector("span");
+    if (label) label.textContent = expanded ? "See less" : "View more";
+    faqToggle.setAttribute("aria-expanded", String(expanded));
+  });
+}
+
 document.querySelectorAll(".scheme-grid article .learn-link").forEach((button) => {
   button.addEventListener("click", () => {
     const card = button.closest("article");
@@ -112,6 +124,18 @@ document.addEventListener("click", (event) => {
 
 document.querySelectorAll("form").forEach((form) => {
   form.addEventListener("submit", (event) => event.preventDefault());
+});
+
+document.querySelectorAll(".border-glow-card").forEach((card) => {
+  card.addEventListener("pointermove", (event) => {
+    const rect = card.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const dx = x - rect.width / 2;
+    const dy = y - rect.height / 2;
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+    card.style.setProperty("--cursor-angle", `${angle < 0 ? angle + 360 : angle}deg`);
+  });
 });
 
 const auroraCanvas = document.querySelector(".aurora-canvas");

@@ -29,7 +29,7 @@
           <form class="search" role="search">
             <input placeholder="Ask SBI Saathi..." aria-label="Ask SBI Saathi">
             <button class="header-voice icon-button" type="button" aria-label="Use voice search"><i data-lucide="mic" aria-hidden="true"></i></button>
-            <button type="submit"><span>Ask</span></button>
+            <button type="submit"><i data-lucide="sparkles" aria-hidden="true"></i><span>Ask</span></button>
             <div class="header-prompts" aria-label="Suggested AI prompts">
               <button type="button">How to open a savings account?</button>
               <button type="button">Show nearest SBI branch</button>
@@ -47,16 +47,16 @@
               English
             </button>
             <div class="language-panel" aria-label="Choose language">
-              <a href="#">Hindi</a>
-              <a href="#">Tamil</a>
-              <a href="#">Telugu</a>
-              <a href="#">Bengali</a>
-              <a href="#">Marathi</a>
-              <a href="#">Gujarati</a>
-              <a href="#">Kannada</a>
-              <a href="#">Malayalam</a>
-              <a href="#">Punjabi</a>
-              <a href="#">Urdu</a>
+              <a href="#" lang="hi">हिन्दी</a>
+              <a href="#" lang="ta">தமிழ்</a>
+              <a href="#" lang="te">తెలుగు</a>
+              <a href="#" lang="bn">বাংলা</a>
+              <a href="#" lang="mr">मराठी</a>
+              <a href="#" lang="gu">ગુજરાતી</a>
+              <a href="#" lang="kn">ಕನ್ನಡ</a>
+              <a href="#" lang="ml">മലയാളം</a>
+              <a href="#" lang="pa">ਪੰਜਾਬੀ</a>
+              <a href="#" lang="ur">اردو</a>
             </div>
           </div>
           <button class="menu-button icon-button" type="button" aria-label="Open menu"><i data-lucide="menu" aria-hidden="true"></i></button>
@@ -225,7 +225,7 @@
           <div class="prompt-row ai-search-row">
             <input placeholder="Ask anything in your language...">
             <button class="saathi-voice icon-button" type="button" aria-label="Use voice assistant"><i data-lucide="mic" aria-hidden="true"></i></button>
-            <button class="saathi-ask" type="button">Ask</button>
+            <button class="saathi-ask" type="button"><i data-lucide="sparkles" aria-hidden="true"></i>Ask</button>
           </div>
           <div class="chips">
             <button>Mujhe kisan loan chahiye, kaise milega?</button>
@@ -284,29 +284,10 @@
       </section>
 
       <section class="locator wrap">
-        <div class="locator-copy">
-          <h2>Find SBI near you</h2>
-          <p>Branches, ATMs and Customer Service Points across India.</p>
-          <div class="locator-tabs">
-            <button class="active" type="button"><i data-lucide="building-2" aria-hidden="true"></i>Branch</button>
-            <button type="button"><i data-lucide="landmark" aria-hidden="true"></i>ATM</button>
-            <button type="button"><i data-lucide="map-pin" aria-hidden="true"></i>CSP</button>
-            <button type="button"><i data-lucide="archive" aria-hidden="true"></i>Locker</button>
-          </div>
-          <div class="locator-search"><input placeholder="Enter village, town, city or PIN code"><button><i data-lucide="search" aria-hidden="true"></i>Search</button></div>
-          <div class="nearest"><b>Nearest branch in your area is 1.2 km away</b><small>MG Road Branch, Bengaluru - Open until 4:00 PM</small></div>
-        </div>
-        <div class="map-card city-map" aria-label="Sample Indian city map">
-          <span class="road main-road"></span>
-          <span class="road ring-road"></span>
-          <span class="road cross-road"></span>
-          <span class="water-body"></span>
-          <span class="park"></span>
-          <span class="pin branch" style="--top:24%;--left:34%">Branch</span>
-          <span class="pin atm" style="--top:54%;--left:58%">ATM</span>
-          <span class="pin locker" style="--top:72%;--left:28%">Locker</span>
-          <span class="pin branch" style="--top:34%;--left:74%">Branch</span>
-          <small>Bengaluru sample map - 22,000+ touchpoints across India</small>
+        <div class="map-card google-map-card" aria-label="Google Maps view with SBI branch and ATM markers">
+          <iframe title="Google Maps near SBI MG Road Bengaluru" src="https://www.google.com/maps?q=SBI%20MG%20Road%20Bengaluru&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <button class="map-tooltip branch" type="button" style="--top:34%;--left:38%"><i data-lucide="building-2" aria-hidden="true"></i><span>SBI Branch</span></button>
+          <button class="map-tooltip atm" type="button" style="--top:58%;--left:63%"><i data-lucide="landmark" aria-hidden="true"></i><span>ATM</span></button>
         </div>
       </section>
 
@@ -318,7 +299,7 @@
             <div class="mini-stats"><b>220+<small>Years of trust</small></b><b>50 Cr+<small>Customers served</small></b><b>22,000+<small>Branches</small></b><b>65,000+<small>ATMs & CSPs</small></b></div>
             <blockquote>"From my village to my smartphone - SBI has always been there."<span>- Lakshmi, Madurai</span></blockquote>
           </div>
-          <div class="sbi-ring-art" aria-hidden="true"><span></span></div>
+          <div class="sbi-ring-art" aria-hidden="true"><img src="assets/sbi-mark-square.png" alt=""></div>
         </article>
       </section>
 
@@ -328,10 +309,15 @@
 
       <section class="faq wrap">
         <h2>Frequently asked questions</h2>
-        <details open><summary>How do I open a bank account?</summary><p>You can start online or visit a branch with identity proof, address proof, PAN or Form 60, and a recent photograph.</p></details>
-        <details><summary>What should I do if my card is lost?</summary><p>Block the card immediately through mobile banking, internet banking, customer care, or your nearest branch, then request a replacement.</p></details>
-        <details><summary>How can I reset internet banking access?</summary><p>Use the bank's official online banking portal to reset your password, or visit a branch if additional verification is needed.</p></details>
-        <details><summary>How do I report an unauthorised transaction?</summary><p>Report it to the bank as soon as possible through official customer care, mobile banking, or a branch, and keep the complaint reference number.</p></details>
+        <div class="faq-list">
+          <details open><summary>How do I open a bank account?</summary><p>You can start online or visit a branch with identity proof, address proof, PAN or Form 60, and a recent photograph.</p></details>
+          <details><summary>What should I do if my card is lost?</summary><p>Block the card immediately through mobile banking, internet banking, customer care, or your nearest branch, then request a replacement.</p></details>
+          <details><summary>How can I reset internet banking access?</summary><p>Use the bank's official online banking portal to reset your password, or visit a branch if additional verification is needed.</p></details>
+          <details class="extra-faq"><summary>How do I report an unauthorised transaction?</summary><p>Report it to the bank as soon as possible through official customer care, mobile banking, or a branch, and keep the complaint reference number.</p></details>
+          <details class="extra-faq"><summary>How do I update my mobile number?</summary><p>Visit your branch or use supported official digital channels where available. Keep your identity documents ready for verification.</p></details>
+          <details class="extra-faq"><summary>How do I find the right loan product?</summary><p>Compare eligibility, tenure, fees, collateral requirements, and repayment comfort before applying. Branch staff can help validate final terms.</p></details>
+        </div>
+        <button class="faq-toggle" type="button" data-faq-toggle><span>View more</span><i data-lucide="chevron-down" aria-hidden="true"></i></button>
       </section>
 
       <section class="help">
@@ -339,12 +325,10 @@
         <div class="wrap">
           <div class="section-title"><h2>Need help? We're here.</h2><p>Real people. Trusted answers. Available across India.</p></div>
           <div class="help-grid">
-            <article><h3>Talk to a Branch Officer</h3><p>Book a slot at your nearest branch.</p></article>
-            <article><h3>Request a Callback</h3><p>We'll call you in your preferred language.</p></article>
-            <article><h3>Chat with SBI Saathi</h3><p>Get answers instantly, anytime.</p></article>
-            <article><h3>Visit a Branch / CSP</h3><p>Find a location closest to you.</p></article>
-            <article><h3>Customer Care</h3><p>1800 1234 / 1800 2100 (toll-free)</p></article>
-            <article><h3>Email Support</h3><p>customercare@sbi.co.in</p></article>
+            <article class="border-glow-card"><span class="edge-light"></span><div class="border-glow-inner"><h3>Talk to a Branch Officer</h3><p>Book a slot at your nearest branch.</p></div></article>
+            <article class="border-glow-card"><span class="edge-light"></span><div class="border-glow-inner"><h3>Request a Callback</h3><p>We'll call you in your preferred language.</p></div></article>
+            <article class="border-glow-card"><span class="edge-light"></span><div class="border-glow-inner"><h3>Customer Care</h3><p>1800 1234 / 1800 2100 (toll-free)</p></div></article>
+            <article class="border-glow-card"><span class="edge-light"></span><div class="border-glow-inner"><h3>Email Support</h3><p>customercare@sbi.co.in</p></div></article>
           </div>
         </div>
       </section>
@@ -372,7 +356,7 @@
         <h2></h2>
         <p class="scheme-detail"></p>
         <section class="scheme-summary-block">
-          <h3>AI generated summary</h3>
+          <h3><i data-lucide="sparkles" aria-hidden="true"></i>AI generated summary</h3>
           <p class="scheme-summary"></p>
         </section>
         <section class="scheme-highlights-block">
@@ -383,7 +367,7 @@
       </div>
     </dialog>
 
-    <button class="floating" type="button" aria-label="Open SBI Saathi"><span class="fab-icon"><i data-lucide="bot" aria-hidden="true"></i></span><span class="fab-text">Ask SBI Saathi</span></button>
+    <button class="floating" type="button" aria-label="Open SBI Saathi"><span class="fab-icon"><i data-lucide="sparkles" aria-hidden="true"></i></span><span class="fab-text">Ask SBI Saathi</span></button>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="script.js"></script>
   </body>
