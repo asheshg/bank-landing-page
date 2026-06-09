@@ -123,6 +123,10 @@ summary:focus-visible {
 .brand:hover .brand-square, .brand:focus-visible .brand-square { opacity: 0; }
 .brand:hover .brand-full, .brand:focus-visible .brand-full { opacity: 1; }
 .footer-brand img { height: 34px; width: auto; }
+.header-nav { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px; margin-left: 10px; }
+.header-nav .secondary-link { min-height: 40px; border-radius: 999px; padding-inline: 14px; }
+.header-nav .quick-card-panel { left: auto; right: 0; }
+.header-nav .explore-panel { left: 0; }
 .language { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--grey-30); background: white; border-radius: 999px; padding: 9px 14px; color: var(--heading); }
 .search { position: relative; flex: 1 1 520px; max-width: 650px; min-width: 180px; }
 .search-logo { display: none; }
@@ -153,8 +157,6 @@ summary:focus-visible {
 .mobile-auth .login-cta { background: white; color: var(--sbi-blue); border: 1px solid var(--primary-blue-20); }
 .mobile-auth .signup-cta { background: var(--sbi-blue); color: white; }
 
-.secondary-header { position: relative; z-index: 3; background: var(--grey-0); border-top: 1px solid var(--grey-30); border-bottom: 1px solid var(--grey-30); }
-.secondary-inner { min-height: 50px; display: flex; align-items: center; gap: 8px; overflow: visible; }
 .secondary-link { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 36px; border-radius: 10px; padding: 0 14px; background: transparent; color: var(--heading); font-size: 14px; font-weight: 500; white-space: nowrap; transition: background-color .2s ease, color .2s ease; }
 .secondary-link:hover, .secondary-link:focus-visible, .nav-menu:hover > .secondary-link { background: var(--primary-blue-10); color: var(--sbi-blue); outline: none; }
 .explore-link { background: transparent; color: var(--heading); }
@@ -317,7 +319,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; position: absolute; right: 0; top: 50%; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: white; color: var(--sbi-blue); border: 1px solid var(--grey-30); transform: translateY(-50%); font-size: 20px; line-height: 1; }
 .faq details[open] summary::after { content: "-"; background: var(--sbi-blue); color: white; border-color: var(--sbi-blue); }
-.faq p { margin-top: 0; }
+.faq p { margin: -2px 44px 18px 0; }
 .extra-faq { display: none; }
 .faq.expanded .extra-faq { display: block; }
 .faq-toggle { margin: 18px auto 0; display: flex; width: max-content; align-items: center; justify-content: center; gap: 6px; min-height: 0; background: transparent; color: var(--sbi-blue); padding: 4px 2px; font-weight: 800; }
