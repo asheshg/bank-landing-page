@@ -115,337 +115,112 @@ dropdowns.forEach((dropdown) => {
   });
 });
 
-118
-118
- document.querySelectorAll(".nav-menu > button").forEach((button) => {
-119
-119
-   button.addEventListener("click", () => button.blur());
-120
-120
- });
-121
-121
- 
-122
-122
- document.addEventListener("click", (event) => {
-123
-123
-   dropdowns.forEach((dropdown) => {
-124
-124
-     if (!dropdown.contains(event.target)) {
-125
-125
-       dropdown.classList.remove("open");
-126
-126
-       dropdown.querySelector("button").setAttribute("aria-expanded", "false");
-127
-127
-     }
-128
-128
-   });
-129
-129
- });
-130
-130
- 
-131
-131
- document.querySelectorAll("form").forEach((form) => {
-132
-132
-   form.addEventListener("submit", (event) => event.preventDefault());
-133
-133
- });
-134
-134
- 
-135
-135
- const auroraCanvas = document.querySelector(".aurora-canvas");
-136
-136
- const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-137
-137
- 
-138
-138
- if (auroraCanvas) {
-139
-139
-   const context = auroraCanvas.getContext("2d", { alpha: true });
-140
--  const colors = ["#5553aa", "#ec7116", "#673391"];
-140
-+  const colors = ["#12a8e0", "#ffd100", "#280071", "#00a2ea"];
-141
-141
-   let width = 0;
-142
-142
-   let height = 0;
-143
-143
-   let frame = 0;
-144
-144
- 
-145
-145
-   function resizeAurora() {
-146
-146
-     const rect = auroraCanvas.getBoundingClientRect();
-147
-147
-     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-148
-148
-     width = Math.max(1, Math.floor(rect.width * dpr));
-149
-149
-     height = Math.max(1, Math.floor(rect.height * dpr));
-150
-150
-     auroraCanvas.width = width;
-151
-151
-     auroraCanvas.height = height;
-152
-152
-     context.setTransform(dpr, 0, 0, dpr, 0, 0);
-153
-153
-   }
-154
-154
- 
-155
-155
-   function drawBand(time, offset, amplitude, alpha, colorShift) {
-156
-156
-     const cssWidth = auroraCanvas.clientWidth;
-157
-157
-     const cssHeight = auroraCanvas.clientHeight;
-158
-158
-     const gradient = context.createLinearGradient(0, 0, cssWidth, 0);
-159
-159
-     gradient.addColorStop(0, colors[colorShift % colors.length]);
-160
-160
-     gradient.addColorStop(0.5, colors[(colorShift + 1) % colors.length]);
-161
-161
-     gradient.addColorStop(1, colors[(colorShift + 2) % colors.length]);
-162
-162
- 
-163
-163
-     context.beginPath();
-164
-164
-     context.moveTo(0, cssHeight);
-165
-165
- 
-166
-166
-     for (let x = 0; x <= cssWidth + 8; x += 8) {
-167
-167
-       const progress = x / cssWidth;
-168
-168
-       const wave =
-169
-169
-         Math.sin(progress * Math.PI * 2.1 + time * 0.72 + offset) * amplitude +
-170
-170
-         Math.sin(progress * Math.PI * 5.4 - time * 0.38 + offset * 0.7) * amplitude * 0.32;
-171
-171
-       const base = cssHeight * (0.34 + offset * 0.045);
-172
-172
-       context.lineTo(x, base + wave);
-173
-173
-     }
-174
-174
- 
-175
-175
-     context.lineTo(cssWidth, cssHeight);
-176
-176
-     context.closePath();
-177
-177
-     context.globalAlpha = alpha;
-178
-178
-     context.fillStyle = gradient;
-179
-179
-     context.fill();
-180
-180
-   }
-181
-181
- 
-182
-182
-   function drawAurora(timestamp = 0) {
-183
-183
-     const cssWidth = auroraCanvas.clientWidth;
-184
-184
-     const cssHeight = auroraCanvas.clientHeight;
-185
-185
-     const time = timestamp * 0.001;
-186
-186
- 
-187
-187
-     context.clearRect(0, 0, cssWidth, cssHeight);
-188
-188
-     context.globalCompositeOperation = "source-over";
-189
-189
- 
-190
-190
-     const base = context.createLinearGradient(0, 0, cssWidth, cssHeight);
-191
--    base.addColorStop(0, "#673391");
-192
--    base.addColorStop(0.48, "#b22382");
-193
--    base.addColorStop(1, "#5553aa");
-191
-+    base.addColorStop(0, "#280071");
-192
-+    base.addColorStop(0.48, "#12a8e0");
-193
-+    base.addColorStop(1, "#00a2ea");
-194
-194
-     context.fillStyle = base;
-195
-195
-     context.fillRect(0, 0, cssWidth, cssHeight);
-196
-196
- 
-197
-197
-     context.globalCompositeOperation = "lighter";
-198
-198
-     drawBand(time, 0.8, cssHeight * 0.09, 0.38, 0);
-199
-199
-     drawBand(time, 2.2, cssHeight * 0.12, 0.28, 1);
-200
-200
-     drawBand(time, 3.4, cssHeight * 0.07, 0.2, 2);
-201
-201
- 
-202
-202
-     const glow = context.createRadialGradient(cssWidth * 0.18, cssHeight * 0.28, 0, cssWidth * 0.18, cssHeight * 0.28, cssWidth * 0.48);
-203
--    glow.addColorStop(0, "rgba(236,113,22,.32)");
-204
--    glow.addColorStop(1, "rgba(236,113,22,0)");
-203
-+    glow.addColorStop(0, "rgba(255,209,0,.32)");
-204
-+    glow.addColorStop(1, "rgba(255,209,0,0)");
-205
-205
-     context.globalAlpha = 1;
-206
-206
-     context.fillStyle = glow;
-207
-207
-     context.fillRect(0, 0, cssWidth, cssHeight);
-208
-208
- 
-209
-209
-     if (!reduceMotion) {
-210
-210
-       frame = requestAnimationFrame(drawAurora);
-211
-211
-     }
-212
-212
-   }
-213
-213
- 
-214
-214
-   if (context) {
-215
-215
-     resizeAurora();
-216
-216
-     drawAurora();
-217
-217
-     window.addEventListener("resize", () => {
-218
-218
-       resizeAurora();
-219
-219
-       if (reduceMotion) drawAurora();
-220
-220
-     });
-221
-221
-   }
-222
-222
- }
-223
-223
- 
-224
-224
- if (window.lucide) {
-225
-225
-   window.lucide.createIcons();
-+
-226
-226
- }
+document.querySelectorAll(".nav-menu > button").forEach((button) => {
+  button.addEventListener("click", () => button.blur());
+});
+
+document.addEventListener("click", (event) => {
+  dropdowns.forEach((dropdown) => {
+    if (!dropdown.contains(event.target)) {
+      dropdown.classList.remove("open");
+      dropdown.querySelector("button").setAttribute("aria-expanded", "false");
+    }
+  });
+});
+
+document.querySelectorAll("form").forEach((form) => {
+  form.addEventListener("submit", (event) => event.preventDefault());
+});
+
+const auroraCanvas = document.querySelector(".aurora-canvas");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (auroraCanvas) {
+  const context = auroraCanvas.getContext("2d", { alpha: true });
+  const colors = ["#5553aa", "#ec7116", "#673391"];
+  let width = 0;
+  let height = 0;
+  let frame = 0;
+
+  function resizeAurora() {
+    const rect = auroraCanvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = Math.max(1, Math.floor(rect.width * dpr));
+    height = Math.max(1, Math.floor(rect.height * dpr));
+    auroraCanvas.width = width;
+    auroraCanvas.height = height;
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function drawBand(time, offset, amplitude, alpha, colorShift) {
+    const cssWidth = auroraCanvas.clientWidth;
+    const cssHeight = auroraCanvas.clientHeight;
+    const gradient = context.createLinearGradient(0, 0, cssWidth, 0);
+    gradient.addColorStop(0, colors[colorShift % colors.length]);
+    gradient.addColorStop(0.5, colors[(colorShift + 1) % colors.length]);
+    gradient.addColorStop(1, colors[(colorShift + 2) % colors.length]);
+
+    context.beginPath();
+    context.moveTo(0, cssHeight);
+
+    for (let x = 0; x <= cssWidth + 8; x += 8) {
+      const progress = x / cssWidth;
+      const wave =
+        Math.sin(progress * Math.PI * 2.1 + time * 0.72 + offset) * amplitude +
+        Math.sin(progress * Math.PI * 5.4 - time * 0.38 + offset * 0.7) * amplitude * 0.32;
+      const base = cssHeight * (0.34 + offset * 0.045);
+      context.lineTo(x, base + wave);
+    }
+
+    context.lineTo(cssWidth, cssHeight);
+    context.closePath();
+    context.globalAlpha = alpha;
+    context.fillStyle = gradient;
+    context.fill();
+  }
+
+  function drawAurora(timestamp = 0) {
+    const cssWidth = auroraCanvas.clientWidth;
+    const cssHeight = auroraCanvas.clientHeight;
+    const time = timestamp * 0.001;
+
+    context.clearRect(0, 0, cssWidth, cssHeight);
+    context.globalCompositeOperation = "source-over";
+
+    const base = context.createLinearGradient(0, 0, cssWidth, cssHeight);
+    base.addColorStop(0, "#673391");
+    base.addColorStop(0.48, "#b22382");
+    base.addColorStop(1, "#5553aa");
+    context.fillStyle = base;
+    context.fillRect(0, 0, cssWidth, cssHeight);
+
+    context.globalCompositeOperation = "lighter";
+    drawBand(time, 0.8, cssHeight * 0.09, 0.38, 0);
+    drawBand(time, 2.2, cssHeight * 0.12, 0.28, 1);
+    drawBand(time, 3.4, cssHeight * 0.07, 0.2, 2);
+
+    const glow = context.createRadialGradient(cssWidth * 0.18, cssHeight * 0.28, 0, cssWidth * 0.18, cssHeight * 0.28, cssWidth * 0.48);
+    glow.addColorStop(0, "rgba(236,113,22,.32)");
+    glow.addColorStop(1, "rgba(236,113,22,0)");
+    context.globalAlpha = 1;
+    context.fillStyle = glow;
+    context.fillRect(0, 0, cssWidth, cssHeight);
+
+    if (!reduceMotion) {
+      frame = requestAnimationFrame(drawAurora);
+    }
+  }
+
+  if (context) {
+    resizeAurora();
+    drawAurora();
+    window.addEventListener("resize", () => {
+      resizeAurora();
+      if (reduceMotion) drawAurora();
+    });
+  }
+}
+
+if (window.lucide) {
+  window.lucide.createIcons();
+}
