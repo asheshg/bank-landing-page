@@ -137,7 +137,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 
 if (auroraCanvas) {
   const context = auroraCanvas.getContext("2d", { alpha: true });
-  const colors = ["#5553aa", "#ec7116", "#673391"];
+  const colors = ["#292075", "#00a9e0", "#075aa0"];
   let width = 0;
   let height = 0;
   let frame = 0;
@@ -188,9 +188,9 @@ if (auroraCanvas) {
     context.globalCompositeOperation = "source-over";
 
     const base = context.createLinearGradient(0, 0, cssWidth, cssHeight);
-    base.addColorStop(0, "#673391");
-    base.addColorStop(0.48, "#b22382");
-    base.addColorStop(1, "#5553aa");
+    base.addColorStop(0, "#292075");
+    base.addColorStop(0.48, "#075aa0");
+    base.addColorStop(1, "#00a9e0");
     context.fillStyle = base;
     context.fillRect(0, 0, cssWidth, cssHeight);
 
@@ -200,8 +200,8 @@ if (auroraCanvas) {
     drawBand(time, 3.4, cssHeight * 0.07, 0.2, 2);
 
     const glow = context.createRadialGradient(cssWidth * 0.18, cssHeight * 0.28, 0, cssWidth * 0.18, cssHeight * 0.28, cssWidth * 0.48);
-    glow.addColorStop(0, "rgba(236,113,22,.32)");
-    glow.addColorStop(1, "rgba(236,113,22,0)");
+    glow.addColorStop(0, "rgba(0,181,239,.32)");
+    glow.addColorStop(1, "rgba(0,181,239,0)");
     context.globalAlpha = 1;
     context.fillStyle = glow;
     context.fillRect(0, 0, cssWidth, cssHeight);
