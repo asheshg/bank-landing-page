@@ -158,9 +158,9 @@ summary:focus-visible {
 .language-menu { position: relative; flex-shrink: 0; }
 .language::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); margin-left: 2px; }
 .language-panel { position: absolute; right: 0; top: calc(100% + 8px); z-index: 80; width: 190px; display: grid; gap: 2px; padding: 8px; border: 1px solid var(--grey-30); border-radius: 12px; background: white; box-shadow: 0 18px 44px rgb(63 63 63 / .16); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px) scale(.985); transform-origin: top right; filter: blur(2px); transition: opacity var(--motion-standard) var(--ease-standard), transform var(--motion-standard) var(--ease-out-strong), filter var(--motion-standard) var(--ease-out-strong), visibility var(--motion-standard) var(--ease-standard); }
-.language-menu:hover .language-panel, .language-menu:focus-within .language-panel, .language-menu.open .language-panel { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0) scale(1); filter: blur(0); }
+.language-menu.open .language-panel { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0) scale(1); filter: blur(0); }
 .language-panel a { padding: 9px 10px; border-radius: 8px; color: var(--heading); font-size: 14px; }
-.language-panel a:hover, .language-panel a:focus-visible { background: var(--primary-blue-10); color: var(--sbi-blue); outline: none; }
+.language-panel a:hover, .language-panel a:focus-visible, .language-panel a[aria-current="true"] { background: var(--primary-blue-10); color: var(--sbi-blue); outline: none; }
 .menu-button { display: none; flex-shrink: 0; border: 1px solid var(--grey-30); background: white; border-radius: 999px; padding: 8px 12px; }
 .mobile-menu { padding: 16px 24px 22px; display: grid; gap: 10px; border-top: 1px solid var(--grey-30); }
 .mobile-menu[hidden] { display: none; }
@@ -170,16 +170,16 @@ summary:focus-visible {
 .mobile-auth .signup-cta { background: var(--sbi-blue); color: white; }
 
 .secondary-link { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 36px; border-radius: 10px; padding: 0 14px; background: transparent; color: var(--heading); font-size: 14px; font-weight: 500; white-space: nowrap; transition: background-color var(--motion-standard) var(--ease-standard), color var(--motion-standard) var(--ease-standard); }
-.secondary-link:hover, .secondary-link:focus-visible, .nav-menu:hover > .secondary-link { background: var(--primary-blue-10); color: var(--sbi-blue); outline: none; }
+.secondary-link:hover, .secondary-link:focus-visible, .nav-menu.open > .secondary-link { background: var(--primary-blue-10); color: var(--sbi-blue); outline: none; }
 .explore-link { background: transparent; color: var(--heading); }
 .nav-menu { position: relative; }
 .secondary-menu-button::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); margin-left: 9px; transition: transform var(--motion-standard) var(--ease-out-strong); }
-.nav-menu:hover .secondary-menu-button::after { transform: rotate(225deg) translateY(-2px); }
+.nav-menu.open .secondary-menu-button::after { transform: rotate(225deg) translateY(-2px); }
 .quick-card-panel, .explore-panel { position: fixed; left: 50%; top: 94px; border: 1px solid var(--primary-blue-20); border-radius: 12px; background: var(--popover); color: var(--popover-foreground); box-shadow: 0 22px 64px rgb(41 32 117 / .18); opacity: 0; visibility: hidden; pointer-events: none; transform: translate(-50%, 12px) scale(.99); transform-origin: top center; filter: blur(3px); transition: opacity var(--motion-emphasis) var(--ease-standard), transform var(--motion-emphasis) var(--ease-out-strong), filter var(--motion-emphasis) var(--ease-out-strong), visibility var(--motion-emphasis) var(--ease-standard); z-index: 90; }
 .quick-card-panel, .explore-panel { width: min(1180px, calc(100vw - 32px)); display: grid; grid-template-columns: .82fr repeat(4, minmax(122px, 1fr)); gap: 0; padding: 0; overflow: hidden; }
 .quick-card-panel { width: min(1520px, calc(100vw - 20px)); grid-template-columns: .62fr repeat(7, minmax(108px, 1fr)); }
-.nav-menu:hover .quick-card-panel, .nav-menu:hover .explore-panel { opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, 0) scale(1); filter: blur(0); }
-.nav-menu:hover .quick-card-panel { transform: translate(-50%, 0) scale(1); }
+.nav-menu.open .quick-card-panel, .nav-menu.open .explore-panel { opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, 0) scale(1); filter: blur(0); }
+.nav-menu.open .quick-card-panel { transform: translate(-50%, 0) scale(1); }
 .mega-panel section { min-height: 224px; padding: 18px 14px; border-left: 1px solid var(--primary-blue-20); background: white; }
 .quick-card-panel section { min-height: 232px; padding: 16px 10px; }
 .mega-panel .mega-feature { border-left: 0; background: var(--primary-blue-10); color: var(--heading); }
@@ -488,7 +488,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .secondary-link { min-height: 34px; }
   .nav-menu { position: static; }
   .quick-card-panel, .explore-panel { position: absolute; left: 16px; right: 16px; top: calc(100% + 8px); width: auto; grid-template-columns: 1fr; min-height: 0; max-height: calc(100vh - 170px); overflow-y: auto; transform: translateY(12px) scale(.99); }
-  .nav-menu:hover .quick-card-panel, .nav-menu:hover .explore-panel { transform: translateY(0) scale(1); }
+  .nav-menu.open .quick-card-panel, .nav-menu.open .explore-panel { transform: translateY(0) scale(1); }
   .mega-panel section { min-height: 0; border-left: 0; border-top: 1px solid var(--primary-blue-20); }
   .mega-panel .mega-feature { border-top: 0; }
   .mega-panel .mega-feature h3 { font-size: 22px; }
@@ -525,7 +525,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .menu-button { width: 42px; height: 38px; padding: 0; font-size: 11px; justify-content: center; align-items: center; }
   .secondary-inner { gap: 8px; }
   .quick-card-panel, .explore-panel { left: 12px; right: 12px; transform: translateY(12px) scale(.99); }
-  .nav-menu:hover .quick-card-panel, .nav-menu:hover .explore-panel { transform: translateY(0) scale(1); }
+  .nav-menu.open .quick-card-panel, .nav-menu.open .explore-panel { transform: translateY(0) scale(1); }
   .hero, .hero-slide img { min-height: 690px; }
   .hero-copy { left: 24px; right: auto; width: min(312px, calc(100vw - 48px)); max-width: none; overflow: visible; }
   .hero h1 { font-size: 26px; max-width: 100%; }
