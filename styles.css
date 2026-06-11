@@ -56,7 +56,7 @@
   --space-section-tight: clamp(24px, 4vw, 38px);
   --space-card: clamp(20px, 3vw, 30px);
   --saathi-hero-overlap: clamp(118px, 16vw, 150px);
-  --saathi-help-overlap: 0px;
+  --saathi-help-overlap: clamp(112px, 11vw, 142px);
   --radius-panel: 20px;
   --radius-card: 12px;
   --shadow-card: 0 10px 28px rgb(63 63 63 / .07);
@@ -360,7 +360,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .faq-toggle:hover, .faq-toggle:focus-visible { color: var(--primary-blue); text-decoration: underline; text-underline-offset: 4px; }
 .faq-toggle .lucide { transition: transform var(--motion-standard) var(--ease-out-strong); }
 .faq.expanded .faq-toggle .lucide { transform: rotate(180deg); }
-.help { position: relative; z-index: 1; isolation: isolate; overflow: hidden; margin-top: 0; background: var(--primary-purple); color: white; min-height: clamp(520px, 52vw, 680px); padding-block: clamp(72px, 8vw, 112px) clamp(188px, 16vw, 248px); }
+.help { position: relative; z-index: 1; isolation: isolate; overflow: hidden; margin-top: calc(-1 * var(--saathi-help-overlap)); background: var(--primary-purple); color: white; min-height: clamp(520px, 52vw, 680px); padding-block: calc(var(--saathi-help-overlap) + clamp(56px, 7vw, 92px)) clamp(188px, 16vw, 248px); }
 .aurora-canvas { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; display: block; background:
   radial-gradient(55% 48% at 14% 22%, rgb(0 181 239 / .34), transparent 64%),
   linear-gradient(115deg, var(--primary-purple) 0%, #075aa0 54%, var(--primary-blue) 100%); }
@@ -518,7 +518,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .wrap { padding-inline: 16px; }
   :root {
     --saathi-hero-overlap: 108px;
-    --saathi-help-overlap: 0px;
+    --saathi-help-overlap: 94px;
   }
   .brand { width: 36px; height: 36px; }
   .brand:hover, .brand:focus-visible { width: 36px; }
@@ -539,7 +539,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .hero-copy p:not(.eyebrow) { font-size: 15px; max-width: 100%; overflow-wrap: anywhere; }
   .actions { align-items: stretch; }
   .actions a { width: 100%; max-width: 280px; white-space: normal; }
-  .help { min-height: 620px; margin-top: 0; padding-block: 60px 150px; }
+  .help { min-height: 620px; margin-top: calc(-1 * var(--saathi-help-overlap)); padding-block: calc(var(--saathi-help-overlap) + 52px) 150px; }
   .section-title { max-width: calc(100vw - 48px); }
   .saathi { width: auto; max-width: none; margin: calc(-1 * var(--saathi-hero-overlap)) 24px 0 16px; overflow: hidden; padding: 22px 18px; }
   .saathi-copy { max-width: 100%; }
