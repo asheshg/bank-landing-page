@@ -1,6 +1,6 @@
 const slides = [...document.querySelectorAll(".hero-slide")];
 const dots = [...document.querySelectorAll("[data-go-slide]")];
-const carouselToggle = document.querySelector("[data-carousel-toggle]");
+const carouselToggles = [...document.querySelectorAll("[data-carousel-toggle]")];
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const hero = document.querySelector(".hero");
 let slideIndex = 0;
@@ -23,7 +23,7 @@ function showSlide(index) {
     slide.classList.toggle("is-before", i < slideIndex);
     slide.classList.toggle("is-after", i > slideIndex);
   });
-  dots.forEach((dot, i) => dot.classList.toggle("active", i === slideIndex));
+  dots.forEach((dot) => dot.classList.toggle("active", Number(dot.dataset.goSlide) === slideIndex));
 }
 
 function canAutoPlayHero() {
@@ -43,11 +43,13 @@ function startHeroAutoPlay() {
 }
 
 function syncCarouselToggle() {
-  if (!carouselToggle) return;
-  carouselToggle.setAttribute("aria-label", heroPausedByUser ? "Play carousel" : "Pause carousel");
-  carouselToggle.innerHTML = heroPausedByUser
-    ? '<i data-lucide="play" aria-hidden="true"></i>'
-    : '<i data-lucide="pause" aria-hidden="true"></i>';
+  if (!carouselToggles.length) return;
+  carouselToggles.forEach((carouselToggle) => {
+    carouselToggle.setAttribute("aria-label", heroPausedByUser ? "Play carousel" : "Pause carousel");
+    carouselToggle.innerHTML = heroPausedByUser
+      ? '<i data-lucide="play" aria-hidden="true"></i>'
+      : '<i data-lucide="pause" aria-hidden="true"></i>';
+  });
   window.lucide?.createIcons();
 }
 
@@ -79,7 +81,9 @@ dots.forEach((dot) => {
   });
 });
 
-carouselToggle?.addEventListener("click", () => setHeroUserPaused(!heroPausedByUser));
+carouselToggles.forEach((carouselToggle) => {
+  carouselToggle.addEventListener("click", () => setHeroUserPaused(!heroPausedByUser));
+});
 showSlide(0);
 syncCarouselToggle();
 
