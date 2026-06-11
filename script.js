@@ -394,81 +394,249 @@ document.querySelectorAll("form").forEach((form) => {
 const auroraCanvas = document.querySelector(".aurora-canvas");
 
 if (auroraCanvas) {
-  const context = auroraCanvas.getContext("2d", { alpha: true });
-  const colors = ["#280071", "#12a8e0", "#075aa0"];
-  let width = 0;
-  let height = 0;
+  const colorStops = ["#280071", "#00b5ef", "#12a8e0"];
+  const gl = auroraCanvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: true });
   let frame = 0;
   let auroraVisible = true;
   let auroraAnimating = false;
+  let fallbackContext = null;
+  let fallbackDpr = 1;
+
+  const vertexShaderSource = `#version 300 es
+    in vec2 position;
+    void main() {
+      gl_Position = vec4(position, 0.0, 1.0);
+    }
+  `;
+
+  const fragmentShaderSource = `#version 300 es
+    precision highp float;
+
+    uniform float uTime;
+    uniform float uAmplitude;
+    uniform vec3 uColorStops[3];
+    uniform vec2 uResolution;
+    uniform float uBlend;
+
+    out vec4 fragColor;
+
+    vec3 permute(vec3 x) {
+      return mod(((x * 34.0) + 1.0) * x, 289.0);
+    }
+
+    float snoise(vec2 v) {
+      const vec4 C = vec4(
+        0.211324865405187, 0.366025403784439,
+        -0.577350269189626, 0.024390243902439
+      );
+      vec2 i = floor(v + dot(v, C.yy));
+      vec2 x0 = v - i + dot(i, C.xx);
+      vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+      vec4 x12 = x0.xyxy + C.xxzz;
+      x12.xy -= i1;
+      i = mod(i, 289.0);
+
+      vec3 p = permute(
+        permute(i.y + vec3(0.0, i1.y, 1.0))
+        + i.x + vec3(0.0, i1.x, 1.0)
+      );
+
+      vec3 m = max(
+        0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)),
+        0.0
+      );
+      m = m * m;
+      m = m * m;
+
+      vec3 x = 2.0 * fract(p * C.www) - 1.0;
+      vec3 h = abs(x) - 0.5;
+      vec3 ox = floor(x + 0.5);
+      vec3 a0 = x - ox;
+      m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
+
+      vec3 g;
+      g.x = a0.x * x0.x + h.x * x0.y;
+      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+      return 130.0 * dot(m, g);
+    }
+
+    struct ColorStop {
+      vec3 color;
+      float position;
+    };
+
+    #define COLOR_RAMP(colors, factor, finalColor) { \
+      int index = 0; \
+      for (int i = 0; i < 2; i++) { \
+        ColorStop currentColor = colors[i]; \
+        bool isInBetween = currentColor.position <= factor; \
+        index = int(mix(float(index), float(i), float(isInBetween))); \
+      } \
+      ColorStop currentColor = colors[index]; \
+      ColorStop nextColor = colors[index + 1]; \
+      float range = nextColor.position - currentColor.position; \
+      float lerpFactor = (factor - currentColor.position) / range; \
+      finalColor = mix(currentColor.color, nextColor.color, lerpFactor); \
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / uResolution;
+
+      ColorStop colors[3];
+      colors[0] = ColorStop(uColorStops[0], 0.0);
+      colors[1] = ColorStop(uColorStops[1], 0.5);
+      colors[2] = ColorStop(uColorStops[2], 1.0);
+
+      vec3 rampColor;
+      COLOR_RAMP(colors, uv.x, rampColor);
+
+      float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.42 * uAmplitude;
+      height = exp(height);
+      height = (uv.y * 2.0 - height + 0.2);
+      float intensity = 0.58 * height;
+
+      float midPoint = 0.20;
+      float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
+      vec3 auroraColor = intensity * rampColor;
+
+      fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
+    }
+  `;
+
+  function hexToRgb(hex) {
+    const value = hex.replace("#", "");
+    const number = Number.parseInt(value, 16);
+    return [
+      ((number >> 16) & 255) / 255,
+      ((number >> 8) & 255) / 255,
+      (number & 255) / 255
+    ];
+  }
+
+  function createShader(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  function createProgram() {
+    const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
+    const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+    if (!vertexShader || !fragmentShader) return null;
+
+    const program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      gl.deleteProgram(program);
+      return null;
+    }
+    return program;
+  }
+
+  const auroraProgram = gl ? createProgram() : null;
+  const auroraState = auroraProgram ? (() => {
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    gl.useProgram(auroraProgram);
+
+    const positionLocation = gl.getAttribLocation(auroraProgram, "position");
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clearColor(0, 0, 0, 0);
+
+    return {
+      positionLocation,
+      time: gl.getUniformLocation(auroraProgram, "uTime"),
+      amplitude: gl.getUniformLocation(auroraProgram, "uAmplitude"),
+      colorStops: gl.getUniformLocation(auroraProgram, "uColorStops"),
+      resolution: gl.getUniformLocation(auroraProgram, "uResolution"),
+      blend: gl.getUniformLocation(auroraProgram, "uBlend")
+    };
+  })() : null;
 
   function resizeAurora() {
     const rect = auroraCanvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = Math.max(1, Math.floor(rect.width * dpr));
-    height = Math.max(1, Math.floor(rect.height * dpr));
-    auroraCanvas.width = width;
-    auroraCanvas.height = height;
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  function drawBand(time, offset, amplitude, alpha, colorShift) {
-    const cssWidth = auroraCanvas.clientWidth;
-    const cssHeight = auroraCanvas.clientHeight;
-    const gradient = context.createLinearGradient(0, 0, cssWidth, 0);
-    gradient.addColorStop(0, colors[colorShift % colors.length]);
-    gradient.addColorStop(0.5, colors[(colorShift + 1) % colors.length]);
-    gradient.addColorStop(1, colors[(colorShift + 2) % colors.length]);
-
-    context.beginPath();
-    context.moveTo(0, cssHeight);
-
-    for (let x = 0; x <= cssWidth + 8; x += 8) {
-      const progress = x / cssWidth;
-      const wave =
-        Math.sin(progress * Math.PI * 2.1 + time * 0.72 + offset) * amplitude +
-        Math.sin(progress * Math.PI * 5.4 - time * 0.38 + offset * 0.7) * amplitude * 0.32;
-      const base = cssHeight * (0.34 + offset * 0.045);
-      context.lineTo(x, base + wave);
+    const width = Math.max(1, Math.floor(rect.width * dpr));
+    const height = Math.max(1, Math.floor(rect.height * dpr));
+    if (auroraCanvas.width !== width || auroraCanvas.height !== height) {
+      auroraCanvas.width = width;
+      auroraCanvas.height = height;
     }
-
-    context.lineTo(cssWidth, cssHeight);
-    context.closePath();
-    context.globalAlpha = alpha;
-    context.fillStyle = gradient;
-    context.fill();
+    if (auroraState) {
+      gl.viewport(0, 0, width, height);
+    } else if (fallbackContext) {
+      fallbackDpr = dpr;
+      fallbackContext.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
   }
 
   function shouldAnimateAurora() {
     return !motionQuery.matches && auroraVisible && document.visibilityState === "visible";
   }
 
-  function drawAurora(timestamp = 0, scheduleNext = true) {
+  function drawFallbackAurora(timestamp = 0) {
     const cssWidth = auroraCanvas.clientWidth;
     const cssHeight = auroraCanvas.clientHeight;
     const time = timestamp * 0.001;
+    fallbackContext.clearRect(0, 0, cssWidth, cssHeight);
+    fallbackContext.globalCompositeOperation = "source-over";
 
-    context.clearRect(0, 0, cssWidth, cssHeight);
-    context.globalCompositeOperation = "source-over";
-
-    const base = context.createLinearGradient(0, 0, cssWidth, cssHeight);
+    const base = fallbackContext.createLinearGradient(0, 0, cssWidth, cssHeight);
     base.addColorStop(0, "#280071");
-    base.addColorStop(0.48, "#075aa0");
-    base.addColorStop(1, "#12a8e0");
-    context.fillStyle = base;
-    context.fillRect(0, 0, cssWidth, cssHeight);
+    base.addColorStop(0.56, "#12a8e0");
+    base.addColorStop(1, "#00b5ef");
+    fallbackContext.fillStyle = base;
+    fallbackContext.fillRect(0, 0, cssWidth, cssHeight);
 
-    context.globalCompositeOperation = "lighter";
-    drawBand(time, 0.8, cssHeight * 0.09, 0.38, 0);
-    drawBand(time, 2.2, cssHeight * 0.12, 0.28, 1);
-    drawBand(time, 3.4, cssHeight * 0.07, 0.2, 2);
+    fallbackContext.globalCompositeOperation = "screen";
+    const band = fallbackContext.createLinearGradient(0, 0, cssWidth, 0);
+    band.addColorStop(0, "#280071");
+    band.addColorStop(0.5, "#00b5ef");
+    band.addColorStop(1, "#12a8e0");
 
-    const glow = context.createRadialGradient(cssWidth * 0.18, cssHeight * 0.28, 0, cssWidth * 0.18, cssHeight * 0.28, cssWidth * 0.48);
-    glow.addColorStop(0, "rgba(0,181,239,.32)");
-    glow.addColorStop(1, "rgba(0,181,239,0)");
-    context.globalAlpha = 1;
-    context.fillStyle = glow;
-    context.fillRect(0, 0, cssWidth, cssHeight);
+    fallbackContext.beginPath();
+    fallbackContext.moveTo(0, cssHeight);
+    for (let x = 0; x <= cssWidth + 8; x += 8) {
+      const progress = x / cssWidth;
+      const wave = Math.sin(progress * Math.PI * 2 + time * 0.5) * cssHeight * 0.09;
+      fallbackContext.lineTo(x, cssHeight * 0.28 + wave);
+    }
+    fallbackContext.lineTo(cssWidth, cssHeight);
+    fallbackContext.closePath();
+    fallbackContext.globalAlpha = 0.52;
+    fallbackContext.fillStyle = band;
+    fallbackContext.fill();
+    fallbackContext.globalAlpha = 1;
+    fallbackContext.setTransform(fallbackDpr, 0, 0, fallbackDpr, 0, 0);
+  }
+
+  function drawAurora(timestamp = 0, scheduleNext = true) {
+    if (auroraState) {
+      gl.useProgram(auroraProgram);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform1f(auroraState.time, timestamp * 0.001 * 0.5);
+      gl.uniform1f(auroraState.amplitude, 0.95);
+      gl.uniform1f(auroraState.blend, 0.55);
+      gl.uniform2f(auroraState.resolution, auroraCanvas.width, auroraCanvas.height);
+      gl.uniform3fv(auroraState.colorStops, colorStops.flatMap(hexToRgb));
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    } else {
+      drawFallbackAurora(timestamp);
+    }
 
     if (scheduleNext && shouldAnimateAurora()) {
       frame = requestAnimationFrame(drawAurora);
@@ -492,40 +660,45 @@ if (auroraCanvas) {
     frame = requestAnimationFrame(drawAurora);
   }
 
-  if (context) {
+  if (!auroraState) {
+    fallbackContext = auroraCanvas.getContext("2d", { alpha: true });
+  }
+
+  if (auroraState || fallbackContext) {
     resizeAurora();
     drawAurora(0, false);
     startAurora();
-    window.addEventListener("resize", () => {
-      resizeAurora();
+  }
+
+  window.addEventListener("resize", () => {
+    resizeAurora();
+    drawAurora(0, false);
+    startAurora();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopAurora();
+    } else {
       drawAurora(0, false);
       startAurora();
-    });
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        stopAurora();
-      } else {
+    }
+  });
+  onMotionPreferenceChange(() => {
+    stopAurora();
+    drawAurora(0, false);
+    startAurora();
+  });
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      auroraVisible = entry.isIntersecting;
+      if (auroraVisible) {
         drawAurora(0, false);
         startAurora();
+      } else {
+        stopAurora();
       }
     });
-    onMotionPreferenceChange(() => {
-      stopAurora();
-      drawAurora(0, false);
-      startAurora();
-    });
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver(([entry]) => {
-        auroraVisible = entry.isIntersecting;
-        if (auroraVisible) {
-          drawAurora(0, false);
-          startAurora();
-        } else {
-          stopAurora();
-        }
-      });
-      observer.observe(auroraCanvas);
-    }
+    observer.observe(auroraCanvas);
   }
 }
 
