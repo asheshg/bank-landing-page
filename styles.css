@@ -374,9 +374,97 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   pointer-events: none; }
 .help > .wrap { position: relative; z-index: 2; }
 .help h2, .help p, .help h3 { color: white; }
-.help article { display: grid; align-content: start; gap: 9px; min-height: 156px; background: rgb(255 255 255 / .11); border: 1px solid rgb(255 255 255 / .18); border-radius: var(--radius-card); padding: 24px; backdrop-filter: blur(12px); box-shadow: var(--shadow-card); overflow: hidden; }
+.help article { display: grid; align-content: start; gap: 9px; min-height: 156px; background: rgb(255 255 255 / .11); border: 1px solid rgb(255 255 255 / .18); border-radius: var(--radius-card); padding: 24px; backdrop-filter: blur(12px); box-shadow: var(--shadow-card); overflow: visible; }
 .help article > .lucide { width: 28px; height: 28px; color: white; stroke-width: 1.8; }
 .help article p { color: rgb(238 238 246 / .9); margin-bottom: 0; }
+.border-glow-card {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --edge-sensitivity: 24;
+  --color-sensitivity: 42;
+  --glow-padding: 34px;
+  --cone-spread: 25;
+  --glow-color: rgb(18 168 224 / 1);
+  --glow-color-60: rgb(18 168 224 / .6);
+  --glow-color-50: rgb(18 168 224 / .5);
+  --glow-color-40: rgb(18 168 224 / .4);
+  --glow-color-30: rgb(18 168 224 / .3);
+  --glow-color-20: rgb(18 168 224 / .2);
+  --glow-color-10: rgb(18 168 224 / .1);
+  position: relative;
+  isolation: isolate;
+  transform: translate3d(0, 0, .01px);
+}
+.border-glow-card::before,
+.border-glow-card::after,
+.border-glow-card > .edge-light {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-standard) var(--ease-standard);
+}
+.border-glow-card > :not(.edge-light) { position: relative; z-index: 2; }
+.border-glow-card::before {
+  z-index: 0;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(rgb(255 255 255 / .11) 0 100%) padding-box,
+    radial-gradient(at 80% 55%, #12a8e0 0, transparent 50%) border-box,
+    radial-gradient(at 69% 34%, #00b5ef 0, transparent 50%) border-box,
+    radial-gradient(at 8% 6%, #ffffff 0, transparent 50%) border-box,
+    radial-gradient(at 41% 38%, #280071 0, transparent 50%) border-box,
+    radial-gradient(at 86% 85%, #12a8e0 0, transparent 50%) border-box,
+    linear-gradient(#280071 0 100%) border-box;
+  opacity: max(0, calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity))));
+  mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      black calc(var(--cone-spread) * 1%),
+      transparent calc((var(--cone-spread) + 15) * 1%),
+      transparent calc((100 - var(--cone-spread) - 15) * 1%),
+      black calc((100 - var(--cone-spread)) * 1%)
+    );
+}
+.border-glow-card::after {
+  z-index: 0;
+  background:
+    radial-gradient(at 80% 55%, #12a8e0 0, transparent 50%),
+    radial-gradient(at 69% 34%, #00b5ef 0, transparent 50%),
+    radial-gradient(at 8% 6%, #ffffff 0, transparent 50%),
+    radial-gradient(at 41% 38%, #280071 0, transparent 50%);
+  opacity: calc(.38 * max(0, (var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity))));
+  mix-blend-mode: soft-light;
+  mask-image:
+    linear-gradient(to bottom, black, black),
+    radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%),
+    conic-gradient(from var(--cursor-angle) at center, transparent 5%, black 15%, black 85%, transparent 95%);
+  mask-composite: subtract, add;
+}
+.border-glow-card > .edge-light {
+  inset: calc(var(--glow-padding) * -1);
+  z-index: 0;
+  opacity: max(0, calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity))));
+  mix-blend-mode: plus-lighter;
+  mask-image: conic-gradient(from var(--cursor-angle) at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%);
+}
+.border-glow-card > .edge-light::before {
+  content: "";
+  position: absolute;
+  inset: var(--glow-padding);
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--glow-color),
+    inset 0 0 3px 0 var(--glow-color-50),
+    inset 0 0 8px 0 var(--glow-color-40),
+    inset 0 0 18px 0 var(--glow-color-30),
+    0 0 3px 0 var(--glow-color-50),
+    0 0 10px 0 var(--glow-color-40),
+    0 0 28px 2px var(--glow-color-20),
+    0 0 52px 2px var(--glow-color-10);
+}
 
 .footer { background: linear-gradient(180deg, white, var(--primary-purple-10)); border-top: 1px solid var(--line); padding-block: var(--space-section-tight); }
 .footer-grid { grid-template-columns: 1fr 2fr; }

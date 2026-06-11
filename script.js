@@ -556,8 +556,9 @@ const translationDictionary = {
     "Real people. Trusted answers. Available across India.": "वास्तविक लोग। भरोसेमंद उत्तर। पूरे भारत में उपलब्ध।",
     "Talk to a Branch Officer": "शाखा अधिकारी से बात करें",
     "Book a slot at your nearest branch.": "अपनी नजदीकी शाखा में स्लॉट बुक करें।",
-    "Request a Callback": "कॉलबैक मांगें",
+    "Community Support": "समुदाय सहायता",
     "We'll call you in your preferred language.": "हम आपकी पसंदीदा भाषा में कॉल करेंगे।",
+    "Connect with local guidance and support channels.": "स्थानीय मार्गदर्शन और सहायता चैनलों से जुड़ें।",
     "1800 1234 / 1800 2100 (toll-free)": "1800 1234 / 1800 2100 (टोल-फ्री)",
     "Email Support": "ईमेल सहायता",
     "I am visiting this website for the first time": "मैं पहली बार इस वेबसाइट पर आया/आई हूं",
@@ -749,6 +750,42 @@ try {
   savedLanguage = "en";
 }
 applyLanguage(savedLanguage);
+
+function getCardCenter(element) {
+  const { width, height } = element.getBoundingClientRect();
+  return [width / 2, height / 2];
+}
+
+function getBorderGlowEdgeProximity(element, x, y) {
+  const [centerX, centerY] = getCardCenter(element);
+  const dx = x - centerX;
+  const dy = y - centerY;
+  const kx = dx === 0 ? Infinity : centerX / Math.abs(dx);
+  const ky = dy === 0 ? Infinity : centerY / Math.abs(dy);
+  return Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
+}
+
+function getBorderGlowCursorAngle(element, x, y) {
+  const [centerX, centerY] = getCardCenter(element);
+  const dx = x - centerX;
+  const dy = y - centerY;
+  if (dx === 0 && dy === 0) return 0;
+  const degrees = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+  return degrees < 0 ? degrees + 360 : degrees;
+}
+
+document.querySelectorAll(".border-glow-card").forEach((card) => {
+  card.addEventListener("pointermove", (event) => {
+    const rect = card.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    card.style.setProperty("--edge-proximity", `${(getBorderGlowEdgeProximity(card, x, y) * 100).toFixed(3)}`);
+    card.style.setProperty("--cursor-angle", `${getBorderGlowCursorAngle(card, x, y).toFixed(3)}deg`);
+  });
+  card.addEventListener("pointerleave", () => {
+    card.style.setProperty("--edge-proximity", "0");
+  });
+});
 
 document.querySelectorAll("form").forEach((form) => {
   form.addEventListener("submit", (event) => event.preventDefault());
