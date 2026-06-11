@@ -858,43 +858,44 @@ if (auroraCanvas) {
       vec2 baseUv = (2.0 * gl_FragCoord.xy - uResolution.xy) / uResolution.y;
       baseUv.y *= -1.0;
       baseUv += uParallaxOffset;
+      vec2 fieldUv = baseUv * vec2(0.72, 0.94);
 
       vec2 mouseUv = (2.0 * uMouse - uResolution.xy) / uResolution.y;
       mouseUv.y *= -1.0;
 
-      vec3 base = mix(uLineGradient[0], uLineGradient[1], smoothstep(-1.25, 1.15, baseUv.x));
-      base = mix(base, uLineGradient[2], smoothstep(-0.2, 1.2, baseUv.y) * 0.28);
-      vec3 color = base * 0.26;
+      vec3 base = mix(uLineGradient[0] * 0.22, uLineGradient[1] * 0.2, smoothstep(-1.45, 1.25, baseUv.x));
+      base = mix(base, uLineGradient[2] * 0.16, smoothstep(-0.15, 1.3, baseUv.y) * 0.2);
+      vec3 color = base;
 
       for (int i = 0; i < 20; i++) {
         float fi = float(i);
         float t = fi / 19.0;
-        float angle = -0.45 * log(length(baseUv) + 1.0);
-        vec2 ruv = baseUv * rotate(angle);
-        float line = waveLine(ruv + vec2(0.055 * fi + 1.9, -0.78), 1.5 + 0.2 * fi, baseUv, mouseUv, -0.5);
-        color += gradientColor(t) * line * 0.18;
+        float angle = -0.45 * log(length(fieldUv) + 1.0);
+        vec2 ruv = fieldUv * rotate(angle);
+        float line = waveLine(ruv + vec2(0.07 * fi - 0.72, -0.92), 1.5 + 0.2 * fi, baseUv, mouseUv, -0.5);
+        color += gradientColor(t) * line * 0.11;
       }
 
       for (int i = 0; i < 15; i++) {
         float fi = float(i);
         float t = fi / 14.0;
-        float angle = 0.18 * log(length(baseUv) + 1.0);
-        vec2 ruv = baseUv * rotate(angle);
-        float line = waveLine(ruv + vec2(0.066 * fi + 4.0, -0.06), 2.0 + 0.15 * fi, baseUv, mouseUv, -0.5);
-        color += gradientColor(t) * line * 0.48;
+        float angle = 0.18 * log(length(fieldUv) + 1.0);
+        vec2 ruv = fieldUv * rotate(angle);
+        float line = waveLine(ruv + vec2(0.08 * fi - 0.18, -0.08), 2.0 + 0.15 * fi, baseUv, mouseUv, -0.5);
+        color += gradientColor(t) * line * 0.3;
       }
 
       for (int i = 0; i < 10; i++) {
         float fi = float(i);
         float t = fi / 9.0;
-        float angle = -0.36 * log(length(baseUv) + 1.0);
-        vec2 ruv = baseUv * rotate(angle);
+        float angle = -0.36 * log(length(fieldUv) + 1.0);
+        vec2 ruv = fieldUv * rotate(angle);
         ruv.x *= -1.0;
-        float line = waveLine(ruv + vec2(0.085 * fi + 9.2, 0.48), 1.0 + 0.2 * fi, baseUv, mouseUv, -0.5);
-        color += gradientColor(t) * line * 0.12;
+        float line = waveLine(ruv + vec2(0.1 * fi - 0.58, 0.42), 1.0 + 0.2 * fi, baseUv, mouseUv, -0.5);
+        color += gradientColor(t) * line * 0.08;
       }
 
-      float vignette = smoothstep(1.7, 0.08, length(baseUv * vec2(0.86, 1.05)));
+      float vignette = smoothstep(2.08, 0.12, length(baseUv * vec2(0.72, 0.98)));
       fragColor = vec4(color * vignette, 1.0);
     }
   `;
@@ -994,8 +995,8 @@ if (auroraCanvas) {
 
     const base = fallbackContext.createLinearGradient(0, 0, cssWidth, cssHeight);
     base.addColorStop(0, "#280071");
-    base.addColorStop(0.72, "#12a8e0");
-    base.addColorStop(1, "#00b5ef");
+    base.addColorStop(0.66, "#280071");
+    base.addColorStop(1, "#342b86");
     fallbackContext.fillStyle = base;
     fallbackContext.fillRect(0, 0, cssWidth, cssHeight);
 
@@ -1003,7 +1004,7 @@ if (auroraCanvas) {
     for (let layer = 0; layer < 3; layer++) {
       const count = [20, 15, 10][layer];
       const yBase = [0.72, 0.48, 0.28][layer] * cssHeight;
-      const alpha = [0.24, 0.36, 0.18][layer];
+      const alpha = [0.16, 0.24, 0.12][layer];
       fallbackContext.lineWidth = [1.4, 1.2, 1][layer];
       fallbackContext.globalAlpha = alpha;
       for (let i = 0; i < count; i++) {

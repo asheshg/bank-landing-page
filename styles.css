@@ -365,12 +365,12 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .faq-toggle .lucide { transition: transform var(--motion-standard) var(--ease-out-strong); }
 .faq.expanded .faq-toggle .lucide { transform: rotate(180deg); }
 .help { position: relative; z-index: 1; isolation: isolate; overflow: hidden; margin-top: calc(-1 * var(--saathi-help-overlap)); background: #280071; color: white; min-height: clamp(360px, 38vw, 470px); padding-block: calc(var(--saathi-help-overlap) + clamp(36px, 5vw, 58px)) clamp(72px, 8vw, 108px); }
-.aurora-canvas { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; display: block; pointer-events: none; background:
-  radial-gradient(55% 48% at 14% 22%, rgb(0 181 239 / .18), transparent 64%),
-  linear-gradient(115deg, #280071 0%, #12a8e0 100%); }
+.aurora-canvas { position: absolute; inset: -2px; z-index: 0; width: calc(100% + 4px); height: calc(100% + 4px); display: block; pointer-events: none; background:
+  radial-gradient(60% 52% at 12% 18%, rgb(0 181 239 / .12), transparent 68%),
+  linear-gradient(115deg, #280071 0%, #280071 58%, #342b86 100%); }
 .help::after { content: ""; position: absolute; inset: 0; z-index: 1; background:
-  linear-gradient(180deg, rgb(40 0 113 / .08), rgb(40 0 113 / .56)),
-  linear-gradient(90deg, rgb(40 0 113 / .28), transparent 42%, rgb(18 168 224 / .24));
+  linear-gradient(180deg, rgb(40 0 113 / .38), rgb(40 0 113 / .82)),
+  linear-gradient(90deg, rgb(40 0 113 / .42), transparent 42%, rgb(18 168 224 / .12));
   pointer-events: none; }
 .help > .wrap { position: relative; z-index: 2; }
 .help h2, .help p, .help h3 { color: white; }
@@ -396,7 +396,6 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   transform: translate3d(0, 0, .01px);
 }
 .border-glow-card::before,
-.border-glow-card::after,
 .border-glow-card > .edge-light {
   content: "";
   position: absolute;
@@ -411,7 +410,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   z-index: 0;
   border: 1px solid transparent;
   background:
-    linear-gradient(rgb(255 255 255 / .11) 0 100%) padding-box,
+    linear-gradient(rgb(255 255 255 / 0) 0 100%) padding-box,
     radial-gradient(at 80% 55%, #12a8e0 0, transparent 50%) border-box,
     radial-gradient(at 69% 34%, #00b5ef 0, transparent 50%) border-box,
     radial-gradient(at 8% 6%, #ffffff 0, transparent 50%) border-box,
@@ -427,21 +426,6 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
       transparent calc((100 - var(--cone-spread) - 15) * 1%),
       black calc((100 - var(--cone-spread)) * 1%)
     );
-}
-.border-glow-card::after {
-  z-index: 0;
-  background:
-    radial-gradient(at 80% 55%, #12a8e0 0, transparent 50%),
-    radial-gradient(at 69% 34%, #00b5ef 0, transparent 50%),
-    radial-gradient(at 8% 6%, #ffffff 0, transparent 50%),
-    radial-gradient(at 41% 38%, #280071 0, transparent 50%);
-  opacity: calc(.38 * max(0, (var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity))));
-  mix-blend-mode: soft-light;
-  mask-image:
-    linear-gradient(to bottom, black, black),
-    radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%),
-    conic-gradient(from var(--cursor-angle) at center, transparent 5%, black 15%, black 85%, transparent 95%);
-  mask-composite: subtract, add;
 }
 .border-glow-card > .edge-light {
   inset: calc(var(--glow-padding) * -1);
