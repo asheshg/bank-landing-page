@@ -257,13 +257,15 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .saathi .prompt-row { margin-top: 26px; }
 .prompt-row input, .locator-search input { flex: 1; border: 1px solid var(--line); background: var(--grey-10); border-radius: 14px; min-height: 48px; padding: 0 14px; }
 .prompt-row button, .locator-search button { border-radius: 12px; background: var(--sbi-blue); color: white; padding: 0 16px; }
-.ai-search-row { position: relative; align-items: center; gap: 0; width: 100%; min-width: 0; border: 1px solid var(--primary-blue-20); border-radius: 999px; background: white; padding: 6px; box-shadow: 0 8px 22px rgb(63 63 63 / .08); }
+.ai-search-row { position: relative; align-items: center; gap: 0; width: min(780px, 100%); min-width: 0; margin-inline: auto; border: 2px solid var(--primary-blue-20); border-radius: 999px; background: var(--primary-blue-10); padding: 7px; box-shadow: 0 12px 28px rgb(63 63 63 / .09); }
 .ai-search-row img { display: none; }
-.ai-search-row input { min-height: 54px; border: 0; background: transparent; border-radius: 999px; padding: 0 112px 0 20px; outline: none; }
-.ai-search-row button { position: absolute; top: 50%; transform: translateY(-50%); height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 999px; font-weight: 800; }
-.ai-search-row .saathi-voice { right: 58px; width: 40px; min-width: 40px; padding: 0; background: transparent; color: var(--primary-purple); }
-.ai-search-row .saathi-ask { right: 7px; width: 40px; min-width: 40px; border: 0; background: var(--ai-gradient); color: white; padding: 0; box-shadow: 0 10px 24px rgb(18 168 224 / .22); }
-.ai-search-row .saathi-ask .lucide { width: 17px; height: 17px; }
+.ai-search-row input { min-height: 54px; border: 0; background: white; border-radius: 999px; padding: 0 124px 0 22px; outline: none; box-shadow: inset 0 0 0 1px rgb(202 238 248 / .85); }
+.ai-search-row input::placeholder { color: var(--muted); }
+.ai-search-row button { position: absolute; top: 50%; transform: translateY(-50%); height: 42px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; font-weight: 800; }
+.ai-search-row .saathi-voice { right: 62px; width: 42px; min-width: 42px; padding: 0; background: transparent; color: var(--primary-purple); }
+.ai-search-row .saathi-ask { right: 10px; width: 42px; min-width: 42px; border: 0; background: var(--primary-purple); color: white; padding: 0; box-shadow: 0 10px 24px rgb(40 0 113 / .22); }
+.ai-search-row .saathi-ask:hover, .ai-search-row .saathi-ask:focus-visible { background: var(--primary-purple-80); }
+.ai-search-row .saathi-ask .lucide { width: 18px; height: 18px; }
 .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 16px; }
 .chips button { text-align: left; background: white; border: 1px solid var(--grey-30); border-radius: 999px; padding: 10px 14px; color: var(--heading); box-shadow: 0 2px 7px rgb(63 63 63 / .08); }
 
@@ -536,13 +538,13 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .saathi-copy { max-width: 100%; }
   .saathi h2 { font-size: 30px; overflow-wrap: anywhere; }
   .saathi p { overflow-wrap: anywhere; font-size: 15px; }
-  .ai-search-row { padding: 5px; }
-  .ai-search-row input { width: 100%; min-width: 0; min-height: 40px; padding-left: 14px; padding-right: 88px; font-size: 14px; }
+  .ai-search-row { width: 100%; padding: 5px; }
+  .ai-search-row input { width: 100%; min-width: 0; min-height: 42px; padding-left: 15px; padding-right: 92px; font-size: 14px; }
   .ai-search-row img { display: none; }
   .ai-search-row button { height: 36px; }
-  .ai-search-row .saathi-voice { right: 48px; width: 34px; min-width: 34px; }
-  .ai-search-row .saathi-ask { right: 6px; width: 36px; min-width: 36px; }
-  .ai-search-row .saathi-ask .lucide { width: 15px; height: 15px; }
+  .ai-search-row .saathi-voice { right: 48px; width: 36px; min-width: 36px; }
+  .ai-search-row .saathi-ask { right: 7px; width: 36px; min-width: 36px; }
+  .ai-search-row .saathi-ask .lucide { width: 16px; height: 16px; }
   .stats { grid-template-columns: 1fr; }
   .visit-segment { grid-template-columns: 1fr; border-radius: 18px; }
   .visit-segment button { min-height: 52px; border-radius: 14px; padding-inline: 14px; font-size: 14px; }
