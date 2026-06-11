@@ -334,13 +334,14 @@ if (fabCluster && fabButton && fabPrompts) {
     const fabIcon = fabButton.querySelector(".fab-icon");
     const fabText = fabButton.querySelector(".fab-text");
     fabButton.classList.toggle("is-close", isOpen);
+    fabText.classList.toggle("is-hidden", isOpen);
     fabButton.setAttribute("aria-expanded", String(isOpen));
     fabButton.setAttribute("aria-label", isOpen ? "Close SIA prompts" : "Open SIA prompts");
     fabIcon.innerHTML = isOpen
       ? '<i data-lucide="x" aria-hidden="true"></i>'
       : '<i data-lucide="sparkles" aria-hidden="true"></i>';
     fabText.hidden = isOpen;
-    fabText.textContent = "Ask SIA";
+    fabText.textContent = isOpen ? "" : "Ask SIA";
     fabPrompts.setAttribute("aria-hidden", String(!isOpen));
     window.lucide?.createIcons();
   });
