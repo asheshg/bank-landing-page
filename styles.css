@@ -423,6 +423,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .scheme-skip:hover, .scheme-skip:focus-visible { color: var(--primary-blue); text-decoration: underline; text-underline-offset: 4px; }
 .quiz-progress { height: 8px; overflow: hidden; border-radius: 999px; background: var(--primary-blue-10); }
 .quiz-progress span { display: block; width: var(--progress, 33%); height: 100%; border-radius: inherit; background: var(--ai-gradient); transition: width var(--motion-emphasis) var(--ease-out-strong); }
+.quiz-helper { border-radius: 12px; background: var(--primary-blue-10); color: var(--sbi-blue); padding: 10px 12px; font-size: 13px; line-height: 1.45; }
 .scheme-quiz h3 { font-size: 20px; line-height: 1.25; }
 .quiz-options { display: grid; gap: 10px; }
 .quiz-options button { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border: 1px solid var(--grey-30); border-radius: 12px; background: white; color: var(--heading); padding: 12px 14px; text-align: left; font-weight: 800; }

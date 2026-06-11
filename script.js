@@ -162,6 +162,7 @@ const quizStepLabel = dialog.querySelector("[data-quiz-step-label]");
 const quizProgress = dialog.querySelector("[data-quiz-progress]");
 const quizQuestion = dialog.querySelector("[data-quiz-question]");
 const quizOptions = dialog.querySelector("[data-quiz-options]");
+const dialogModeLabel = dialog.querySelector("[data-dialog-mode-label]");
 const eligibilityResult = dialog.querySelector("[data-eligibility-result]");
 const skipQuizButton = dialog.querySelector("[data-skip-quiz]");
 const checkAgainButton = dialog.querySelector("[data-check-again]");
@@ -252,6 +253,7 @@ function populateSchemeDialog(card) {
 }
 
 function showSchemeDetails({ skipped = false, score = null } = {}) {
+  dialogModeLabel.textContent = "Scheme details";
   quizView.hidden = true;
   detailsView.hidden = false;
   checkAgainButton.hidden = !skipped;
@@ -302,6 +304,7 @@ function startEligibilityQuiz(card) {
   quizStep = 0;
   quizScore = 0;
   populateSchemeDialog(card);
+  dialogModeLabel.textContent = "3-step eligibility quiz";
   detailsView.hidden = true;
   quizView.hidden = false;
   eligibilityResult.hidden = true;
