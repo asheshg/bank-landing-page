@@ -67,9 +67,10 @@ if (faqSection && faqToggle) {
   });
 }
 
-document.querySelectorAll(".scheme-grid article .learn-link").forEach((button) => {
-  button.addEventListener("click", () => {
-    const card = button.closest("article");
+document.querySelectorAll(".scheme-grid article .learn-link, .scheme-grid article .apply-cta").forEach((trigger) => {
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    const card = trigger.closest("article");
     const cardImage = card.querySelector(".scheme-media img");
     const dialogImage = dialog.querySelector(".scheme-dialog-media img");
     dialog.querySelector("h2").textContent = card.dataset.scheme;
@@ -91,6 +92,18 @@ document.querySelectorAll(".scheme-grid article .learn-link").forEach((button) =
 });
 
 document.querySelector(".close-dialog").addEventListener("click", () => dialog.close());
+
+const fabCluster = document.querySelector(".fab-cluster");
+const fabButton = document.querySelector(".floating");
+const fabPrompts = document.querySelector(".fab-prompts");
+
+if (fabCluster && fabButton && fabPrompts) {
+  fabButton.addEventListener("click", () => {
+    const isOpen = fabCluster.classList.toggle("open");
+    fabButton.setAttribute("aria-expanded", String(isOpen));
+    fabPrompts.setAttribute("aria-hidden", String(!isOpen));
+  });
+}
 
 const menuButton = document.querySelector(".menu-button");
 const mobileMenu = document.querySelector(".mobile-menu");
