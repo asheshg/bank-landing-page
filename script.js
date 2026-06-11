@@ -394,13 +394,20 @@ document.querySelectorAll("form").forEach((form) => {
 const auroraCanvas = document.querySelector(".aurora-canvas");
 
 if (auroraCanvas) {
-  const colorStops = ["#280071", "#00b5ef", "#12a8e0"];
+  const auroraHost = auroraCanvas.closest(".help") || auroraCanvas;
+  const lineGradient = ["#280071", "#12a8e0", "#00b5ef", "#ffffff"];
   const gl = auroraCanvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: true });
   let frame = 0;
   let auroraVisible = true;
   let auroraAnimating = false;
   let fallbackContext = null;
   let fallbackDpr = 1;
+  const targetMouse = { x: -1000, y: -1000 };
+  const currentMouse = { x: -1000, y: -1000 };
+  const targetParallax = { x: 0, y: 0 };
+  const currentParallax = { x: 0, y: 0 };
+  let targetInfluence = 0;
+  let currentInfluence = 0;
 
   const vertexShaderSource = `#version 300 es
     in vec2 position;
@@ -413,93 +420,82 @@ if (auroraCanvas) {
     precision highp float;
 
     uniform float uTime;
-    uniform float uAmplitude;
-    uniform vec3 uColorStops[3];
     uniform vec2 uResolution;
-    uniform float uBlend;
+    uniform vec2 uMouse;
+    uniform vec2 uParallaxOffset;
+    uniform float uBendInfluence;
+    uniform vec3 uLineGradient[4];
 
     out vec4 fragColor;
 
-    vec3 permute(vec3 x) {
-      return mod(((x * 34.0) + 1.0) * x, 289.0);
+    mat2 rotate(float angle) {
+      return mat2(cos(angle), sin(angle), -sin(angle), cos(angle));
     }
 
-    float snoise(vec2 v) {
-      const vec4 C = vec4(
-        0.211324865405187, 0.366025403784439,
-        -0.577350269189626, 0.024390243902439
-      );
-      vec2 i = floor(v + dot(v, C.yy));
-      vec2 x0 = v - i + dot(i, C.xx);
-      vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-      vec4 x12 = x0.xyxy + C.xxzz;
-      x12.xy -= i1;
-      i = mod(i, 289.0);
-
-      vec3 p = permute(
-        permute(i.y + vec3(0.0, i1.y, 1.0))
-        + i.x + vec3(0.0, i1.x, 1.0)
-      );
-
-      vec3 m = max(
-        0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)),
-        0.0
-      );
-      m = m * m;
-      m = m * m;
-
-      vec3 x = 2.0 * fract(p * C.www) - 1.0;
-      vec3 h = abs(x) - 0.5;
-      vec3 ox = floor(x + 0.5);
-      vec3 a0 = x - ox;
-      m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
-
-      vec3 g;
-      g.x = a0.x * x0.x + h.x * x0.y;
-      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-      return 130.0 * dot(m, g);
+    vec3 gradientColor(float t) {
+      float clamped = clamp(t, 0.0, 0.9999) * 3.0;
+      int index = int(floor(clamped));
+      float f = fract(clamped);
+      if (index == 0) return mix(uLineGradient[0], uLineGradient[1], f);
+      if (index == 1) return mix(uLineGradient[1], uLineGradient[2], f);
+      return mix(uLineGradient[2], uLineGradient[3], f);
     }
 
-    struct ColorStop {
-      vec3 color;
-      float position;
-    };
+    float waveLine(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, float bendStrength) {
+      float xMovement = uTime * 0.1;
+      float amp = sin(offset + uTime * 0.2) * 0.3;
+      float y = sin(uv.x + offset + xMovement) * amp;
 
-    #define COLOR_RAMP(colors, factor, finalColor) { \
-      int index = 0; \
-      for (int i = 0; i < 2; i++) { \
-        ColorStop currentColor = colors[i]; \
-        bool isInBetween = currentColor.position <= factor; \
-        index = int(mix(float(index), float(i), float(isInBetween))); \
-      } \
-      ColorStop currentColor = colors[index]; \
-      ColorStop nextColor = colors[index + 1]; \
-      float range = nextColor.position - currentColor.position; \
-      float lerpFactor = (factor - currentColor.position) / range; \
-      finalColor = mix(currentColor.color, nextColor.color, lerpFactor); \
+      vec2 distanceFromMouse = screenUv - mouseUv;
+      float influence = exp(-dot(distanceFromMouse, distanceFromMouse) * 5.0);
+      y += (mouseUv.y - screenUv.y) * influence * bendStrength * uBendInfluence;
+
+      float m = uv.y - y;
+      return 0.0175 / max(abs(m) + 0.01, 0.001) + 0.01;
     }
 
     void main() {
-      vec2 uv = gl_FragCoord.xy / uResolution;
+      vec2 baseUv = (2.0 * gl_FragCoord.xy - uResolution.xy) / uResolution.y;
+      baseUv.y *= -1.0;
+      baseUv += uParallaxOffset;
 
-      ColorStop colors[3];
-      colors[0] = ColorStop(uColorStops[0], 0.0);
-      colors[1] = ColorStop(uColorStops[1], 0.5);
-      colors[2] = ColorStop(uColorStops[2], 1.0);
+      vec2 mouseUv = (2.0 * uMouse - uResolution.xy) / uResolution.y;
+      mouseUv.y *= -1.0;
 
-      vec3 rampColor;
-      COLOR_RAMP(colors, uv.x, rampColor);
+      vec3 base = mix(uLineGradient[0], uLineGradient[1], smoothstep(-1.25, 1.15, baseUv.x));
+      base = mix(base, uLineGradient[2], smoothstep(-0.2, 1.2, baseUv.y) * 0.28);
+      vec3 color = base * 0.26;
 
-      float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.42 * uAmplitude;
-      height = exp(height);
-      height = (uv.y * 2.0 - height + 0.2);
-      float intensity = 0.58 * height;
+      for (int i = 0; i < 20; i++) {
+        float fi = float(i);
+        float t = fi / 19.0;
+        float angle = -0.45 * log(length(baseUv) + 1.0);
+        vec2 ruv = baseUv * rotate(angle);
+        float line = waveLine(ruv + vec2(0.055 * fi + 1.9, -0.78), 1.5 + 0.2 * fi, baseUv, mouseUv, -0.5);
+        color += gradientColor(t) * line * 0.18;
+      }
 
-      float midPoint = 0.20;
-      float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
-      vec3 auroraColor = intensity * rampColor;
+      for (int i = 0; i < 15; i++) {
+        float fi = float(i);
+        float t = fi / 14.0;
+        float angle = 0.18 * log(length(baseUv) + 1.0);
+        vec2 ruv = baseUv * rotate(angle);
+        float line = waveLine(ruv + vec2(0.066 * fi + 4.0, -0.06), 2.0 + 0.15 * fi, baseUv, mouseUv, -0.5);
+        color += gradientColor(t) * line * 0.48;
+      }
 
-      fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
+      for (int i = 0; i < 10; i++) {
+        float fi = float(i);
+        float t = fi / 9.0;
+        float angle = -0.36 * log(length(baseUv) + 1.0);
+        vec2 ruv = baseUv * rotate(angle);
+        ruv.x *= -1.0;
+        float line = waveLine(ruv + vec2(0.085 * fi + 9.2, 0.48), 1.0 + 0.2 * fi, baseUv, mouseUv, -0.5);
+        color += gradientColor(t) * line * 0.12;
+      }
+
+      float vignette = smoothstep(1.7, 0.08, length(baseUv * vec2(0.86, 1.05)));
+      fragColor = vec4(color * vignette, 1.0);
     }
   `;
 
@@ -560,10 +556,11 @@ if (auroraCanvas) {
     return {
       positionLocation,
       time: gl.getUniformLocation(auroraProgram, "uTime"),
-      amplitude: gl.getUniformLocation(auroraProgram, "uAmplitude"),
-      colorStops: gl.getUniformLocation(auroraProgram, "uColorStops"),
       resolution: gl.getUniformLocation(auroraProgram, "uResolution"),
-      blend: gl.getUniformLocation(auroraProgram, "uBlend")
+      mouse: gl.getUniformLocation(auroraProgram, "uMouse"),
+      parallaxOffset: gl.getUniformLocation(auroraProgram, "uParallaxOffset"),
+      bendInfluence: gl.getUniformLocation(auroraProgram, "uBendInfluence"),
+      lineGradient: gl.getUniformLocation(auroraProgram, "uLineGradient[0]")
     };
   })() : null;
 
@@ -597,42 +594,55 @@ if (auroraCanvas) {
 
     const base = fallbackContext.createLinearGradient(0, 0, cssWidth, cssHeight);
     base.addColorStop(0, "#280071");
-    base.addColorStop(0.56, "#12a8e0");
+    base.addColorStop(0.72, "#12a8e0");
     base.addColorStop(1, "#00b5ef");
     fallbackContext.fillStyle = base;
     fallbackContext.fillRect(0, 0, cssWidth, cssHeight);
 
     fallbackContext.globalCompositeOperation = "screen";
-    const band = fallbackContext.createLinearGradient(0, 0, cssWidth, 0);
-    band.addColorStop(0, "#280071");
-    band.addColorStop(0.5, "#00b5ef");
-    band.addColorStop(1, "#12a8e0");
-
-    fallbackContext.beginPath();
-    fallbackContext.moveTo(0, cssHeight);
-    for (let x = 0; x <= cssWidth + 8; x += 8) {
-      const progress = x / cssWidth;
-      const wave = Math.sin(progress * Math.PI * 2 + time * 0.5) * cssHeight * 0.09;
-      fallbackContext.lineTo(x, cssHeight * 0.28 + wave);
+    for (let layer = 0; layer < 3; layer++) {
+      const count = [20, 15, 10][layer];
+      const yBase = [0.72, 0.48, 0.28][layer] * cssHeight;
+      const alpha = [0.24, 0.36, 0.18][layer];
+      fallbackContext.lineWidth = [1.4, 1.2, 1][layer];
+      fallbackContext.globalAlpha = alpha;
+      for (let i = 0; i < count; i++) {
+        const progress = i / Math.max(count - 1, 1);
+        const stroke = fallbackContext.createLinearGradient(0, 0, cssWidth, 0);
+        stroke.addColorStop(0, "#280071");
+        stroke.addColorStop(0.48, "#12a8e0");
+        stroke.addColorStop(1, progress > 0.74 ? "#ffffff" : "#00b5ef");
+        fallbackContext.strokeStyle = stroke;
+        fallbackContext.beginPath();
+        for (let x = -16; x <= cssWidth + 16; x += 12) {
+          const p = x / cssWidth;
+          const y = yBase + i * 5 + Math.sin(p * Math.PI * 2.2 + time * 0.55 + i * 0.18 + layer) * cssHeight * 0.035;
+          if (x <= -16) fallbackContext.moveTo(x, y);
+          else fallbackContext.lineTo(x, y);
+        }
+        fallbackContext.stroke();
+      }
     }
-    fallbackContext.lineTo(cssWidth, cssHeight);
-    fallbackContext.closePath();
-    fallbackContext.globalAlpha = 0.52;
-    fallbackContext.fillStyle = band;
-    fallbackContext.fill();
     fallbackContext.globalAlpha = 1;
     fallbackContext.setTransform(fallbackDpr, 0, 0, fallbackDpr, 0, 0);
   }
 
   function drawAurora(timestamp = 0, scheduleNext = true) {
+    currentMouse.x += (targetMouse.x - currentMouse.x) * 0.05;
+    currentMouse.y += (targetMouse.y - currentMouse.y) * 0.05;
+    currentParallax.x += (targetParallax.x - currentParallax.x) * 0.05;
+    currentParallax.y += (targetParallax.y - currentParallax.y) * 0.05;
+    currentInfluence += (targetInfluence - currentInfluence) * 0.05;
+
     if (auroraState) {
       gl.useProgram(auroraProgram);
       gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.uniform1f(auroraState.time, timestamp * 0.001 * 0.5);
-      gl.uniform1f(auroraState.amplitude, 0.95);
-      gl.uniform1f(auroraState.blend, 0.55);
+      gl.uniform1f(auroraState.time, timestamp * 0.001);
       gl.uniform2f(auroraState.resolution, auroraCanvas.width, auroraCanvas.height);
-      gl.uniform3fv(auroraState.colorStops, colorStops.flatMap(hexToRgb));
+      gl.uniform2f(auroraState.mouse, currentMouse.x, currentMouse.y);
+      gl.uniform2f(auroraState.parallaxOffset, currentParallax.x, currentParallax.y);
+      gl.uniform1f(auroraState.bendInfluence, currentInfluence);
+      gl.uniform3fv(auroraState.lineGradient, lineGradient.flatMap(hexToRgb));
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     } else {
       drawFallbackAurora(timestamp);
@@ -669,6 +679,24 @@ if (auroraCanvas) {
     drawAurora(0, false);
     startAurora();
   }
+
+  auroraHost.addEventListener("pointermove", (event) => {
+    const rect = auroraHost.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    targetMouse.x = x * dpr;
+    targetMouse.y = (rect.height - y) * dpr;
+    targetInfluence = 1;
+    targetParallax.x = ((x - rect.width / 2) / rect.width) * 0.18;
+    targetParallax.y = (-(y - rect.height / 2) / rect.height) * 0.18;
+  });
+
+  auroraHost.addEventListener("pointerleave", () => {
+    targetInfluence = 0;
+    targetParallax.x = 0;
+    targetParallax.y = 0;
+  });
 
   window.addEventListener("resize", () => {
     resizeAurora();

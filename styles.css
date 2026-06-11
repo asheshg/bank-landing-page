@@ -365,13 +365,14 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .faq-toggle .lucide { transition: transform var(--motion-standard) var(--ease-out-strong); }
 .faq.expanded .faq-toggle .lucide { transform: rotate(180deg); }
 .help { position: relative; z-index: 1; isolation: isolate; overflow: hidden; margin-top: calc(-1 * var(--saathi-help-overlap)); background: #280071; color: white; min-height: clamp(360px, 38vw, 470px); padding-block: calc(var(--saathi-help-overlap) + clamp(36px, 5vw, 58px)) clamp(72px, 8vw, 108px); }
-.aurora-canvas { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; display: block; background:
-  radial-gradient(55% 48% at 14% 22%, rgb(0 181 239 / .28), transparent 64%),
+.aurora-canvas { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; display: block; pointer-events: none; background:
+  radial-gradient(55% 48% at 14% 22%, rgb(0 181 239 / .18), transparent 64%),
   linear-gradient(115deg, #280071 0%, #12a8e0 100%); }
-.help::after { content: ""; position: absolute; inset: 0; z-index: -1; background:
+.help::after { content: ""; position: absolute; inset: 0; z-index: 1; background:
   linear-gradient(180deg, rgb(40 0 113 / .08), rgb(40 0 113 / .56)),
   linear-gradient(90deg, rgb(40 0 113 / .28), transparent 42%, rgb(18 168 224 / .24));
   pointer-events: none; }
+.help > .wrap { position: relative; z-index: 2; }
 .help h2, .help p, .help h3 { color: white; }
 .help article { display: grid; align-content: start; gap: 9px; min-height: 156px; background: rgb(255 255 255 / .11); border: 1px solid rgb(255 255 255 / .18); border-radius: var(--radius-card); padding: 24px; backdrop-filter: blur(12px); box-shadow: var(--shadow-card); overflow: hidden; }
 .help article > .lucide { width: 28px; height: 28px; color: white; stroke-width: 1.8; }
