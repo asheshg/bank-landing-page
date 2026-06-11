@@ -289,8 +289,8 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .scheme-body h3 { font-size: 22px; }
 .scheme-body p { margin: 0; }
 .scheme-card-actions { align-self: end; display: flex; align-items: center; justify-content: flex-start; gap: 12px; margin-top: 6px; }
-.apply-cta { min-height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); padding: 0 16px; font-weight: 800; opacity: 1; transform: translateY(0); pointer-events: auto; transition: opacity var(--motion-standard) var(--ease-standard), transform var(--motion-standard) var(--ease-out-strong), box-shadow var(--motion-standard) var(--ease-standard); box-shadow: 0 12px 26px rgb(41 32 117 / .22); }
-.cutout-card:hover .apply-cta, .cutout-card:focus-within .apply-cta { transform: translateY(-2px); box-shadow: 0 16px 32px rgb(41 32 117 / .28); }
+.apply-cta { min-height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); padding: 0 16px; font-weight: 800; opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity var(--motion-standard) var(--ease-standard), transform var(--motion-standard) var(--ease-out-strong), box-shadow var(--motion-standard) var(--ease-standard); box-shadow: 0 12px 26px rgb(41 32 117 / .22); }
+.cutout-card:hover .apply-cta, .cutout-card:focus-within .apply-cta { opacity: 1; transform: translateY(-2px); pointer-events: auto; box-shadow: 0 16px 32px rgb(41 32 117 / .28); }
 .eligibility-meter { display: grid; gap: 6px; margin-top: 2px; }
 .eligibility-meter[hidden] { display: none; }
 .eligibility-meter b, .eligibility-result b { display: flex; justify-content: space-between; gap: 12px; color: var(--heading); font-size: 13px; }
@@ -399,9 +399,12 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .floating:hover, .floating:focus-visible { transform: translateY(-2px); box-shadow: 0 22px 48px rgb(41 32 117 / .4); outline: none; }
 .fab-cluster.open .floating { background: white; color: var(--sbi-blue); border: 1px solid var(--primary-blue-20); box-shadow: 0 14px 32px rgb(63 63 63 / .18); }
 .fab-cluster.open .floating:hover, .fab-cluster.open .floating:focus-visible { background: var(--primary-blue-10); color: var(--sbi-blue); transform: translateY(-1px); box-shadow: 0 18px 38px rgb(63 63 63 / .2); }
+.fab-cluster.open .floating { min-width: 56px; width: 56px; padding: 0; gap: 0; }
 .fab-icon { display: grid; place-items: center; width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%; background: transparent; color: white; font-size: 13px; }
+.fab-cluster.open .fab-icon { color: var(--sbi-blue); }
 .fab-icon .lucide { width: 21px; height: 21px; }
 .fab-text { opacity: 1; max-width: 120px; }
+.fab-cluster.open .fab-text { display: none; }
 .scheme-dialog { width: min(680px, calc(100vw - 32px)); border: 0; border-radius: 20px; padding: 0; background: transparent; box-shadow: 0 30px 80px rgb(63 63 63 / .32); opacity: 0; transform: translateY(14px) scale(.985); transition: opacity var(--motion-emphasis) var(--ease-standard), transform var(--motion-emphasis) var(--ease-out-strong), overlay var(--motion-emphasis) allow-discrete, display var(--motion-emphasis) allow-discrete; }
 .scheme-dialog[open] { opacity: 1; transform: translateY(0) scale(1); }
 .scheme-dialog::backdrop { background: rgb(63 63 63 / .5); opacity: 0; transition: opacity var(--motion-emphasis) var(--ease-standard); }
@@ -561,6 +564,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .sbi-ring-art img { right: -130px; bottom: -140px; width: 390px; }
   .fab-cluster { right: 16px; bottom: 16px; }
   .floating { min-width: 124px; min-height: 52px; padding: 0 15px; }
+  .fab-cluster.open .floating { min-width: 52px; width: 52px; padding: 0; }
   .fab-icon { width: 28px; height: 28px; flex-basis: 28px; }
   .scheme-dialog { width: 100vw; max-width: none; max-height: 88vh; margin: auto 0 0; border-radius: 20px 20px 0 0; }
   .scheme-dialog-panel { max-height: 88vh; overflow-y: auto; border-radius: 20px 20px 0 0; padding: 24px 20px calc(24px + env(safe-area-inset-bottom)); }

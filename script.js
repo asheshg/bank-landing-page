@@ -252,11 +252,11 @@ function populateSchemeDialog(card) {
   });
 }
 
-function showSchemeDetails({ skipped = false, score = null } = {}) {
+function showSchemeDetails({ skipped = false, completed = false, score = null } = {}) {
   dialogModeLabel.textContent = "Scheme details";
   quizView.hidden = true;
   detailsView.hidden = false;
-  checkAgainButton.hidden = !skipped;
+  checkAgainButton.hidden = completed || !skipped;
   if (score === null) {
     eligibilityResult.hidden = true;
     return;
@@ -290,7 +290,7 @@ function renderQuizStep() {
         quizStep += 1;
         renderQuizStep();
       } else {
-        showSchemeDetails({ score: Math.min(100, quizScore) });
+        showSchemeDetails({ completed: true, score: Math.min(100, quizScore) });
       }
       window.lucide?.createIcons();
     });
@@ -336,7 +336,7 @@ if (fabCluster && fabButton && fabPrompts) {
     fabButton.querySelector(".fab-icon").innerHTML = isOpen
       ? '<i data-lucide="x" aria-hidden="true"></i>'
       : '<i data-lucide="sparkles" aria-hidden="true"></i>';
-    fabButton.querySelector(".fab-text").textContent = isOpen ? "Close" : "Ask SIA";
+    fabButton.querySelector(".fab-text").textContent = "Ask SIA";
     fabPrompts.setAttribute("aria-hidden", String(!isOpen));
     window.lucide?.createIcons();
   });
