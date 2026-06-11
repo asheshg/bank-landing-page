@@ -56,7 +56,7 @@
   --space-section-tight: clamp(24px, 4vw, 38px);
   --space-card: clamp(20px, 3vw, 30px);
   --saathi-hero-overlap: clamp(118px, 16vw, 150px);
-  --saathi-help-overlap: clamp(178px, 18vw, 220px);
+  --saathi-help-overlap: 0px;
   --radius-panel: 20px;
   --radius-card: 12px;
   --shadow-card: 0 10px 28px rgb(63 63 63 / .07);
@@ -138,7 +138,7 @@ summary:focus-visible {
 .footer-brand img { height: 34px; width: auto; }
 .header-nav { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px; margin-left: 10px; }
 .header-nav .secondary-link { min-height: 40px; border-radius: 999px; padding-inline: 14px; }
-.header-nav .quick-card-panel { left: 0; right: auto; }
+.header-nav .quick-card-panel { left: auto; right: 0; }
 .header-nav .explore-panel { left: 0; }
 .language { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--grey-30); background: white; border-radius: 999px; padding: 9px 14px; color: var(--heading); }
 .search { position: relative; flex: 1 1 520px; max-width: 650px; min-width: 180px; }
@@ -360,7 +360,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .faq-toggle:hover, .faq-toggle:focus-visible { color: var(--primary-blue); text-decoration: underline; text-underline-offset: 4px; }
 .faq-toggle .lucide { transition: transform var(--motion-standard) var(--ease-out-strong); }
 .faq.expanded .faq-toggle .lucide { transform: rotate(180deg); }
-.help { position: relative; z-index: 1; isolation: isolate; overflow: hidden; margin-top: calc(-1 * var(--saathi-help-overlap)); background: var(--primary-purple); color: white; min-height: clamp(520px, 52vw, 680px); padding-block: calc(var(--saathi-help-overlap) + clamp(52px, 7vw, 92px)) clamp(188px, 16vw, 248px); }
+.help { position: relative; z-index: 1; isolation: isolate; overflow: hidden; margin-top: 0; background: var(--primary-purple); color: white; min-height: clamp(520px, 52vw, 680px); padding-block: clamp(72px, 8vw, 112px) clamp(188px, 16vw, 248px); }
 .aurora-canvas { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; display: block; background:
   radial-gradient(55% 48% at 14% 22%, rgb(0 181 239 / .34), transparent 64%),
   linear-gradient(115deg, var(--primary-purple) 0%, #075aa0 54%, var(--primary-blue) 100%); }
@@ -398,6 +398,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .floating { min-width: 136px; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; border-radius: 999px; background: var(--ai-gradient); color: var(--primary-foreground); padding: 0 17px; box-shadow: 0 18px 40px rgb(41 32 117 / .32); font-weight: 800; white-space: nowrap; transition: box-shadow var(--motion-standard) var(--ease-standard), transform var(--motion-standard) var(--ease-out-strong); }
 .floating:hover, .floating:focus-visible { transform: translateY(-2px); box-shadow: 0 22px 48px rgb(41 32 117 / .4); outline: none; }
 .fab-cluster.open .floating { background: white; color: var(--sbi-blue); border: 1px solid var(--primary-blue-20); box-shadow: 0 14px 32px rgb(63 63 63 / .18); }
+.fab-cluster.open .floating:hover, .fab-cluster.open .floating:focus-visible { background: var(--primary-blue-10); color: var(--sbi-blue); transform: translateY(-1px); box-shadow: 0 18px 38px rgb(63 63 63 / .2); }
 .fab-icon { display: grid; place-items: center; width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%; background: transparent; color: white; font-size: 13px; }
 .fab-icon .lucide { width: 21px; height: 21px; }
 .fab-text { opacity: 1; max-width: 120px; }
@@ -517,7 +518,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .wrap { padding-inline: 16px; }
   :root {
     --saathi-hero-overlap: 108px;
-    --saathi-help-overlap: 150px;
+    --saathi-help-overlap: 0px;
   }
   .brand { width: 36px; height: 36px; }
   .brand:hover, .brand:focus-visible { width: 36px; }
@@ -538,7 +539,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .hero-copy p:not(.eyebrow) { font-size: 15px; max-width: 100%; overflow-wrap: anywhere; }
   .actions { align-items: stretch; }
   .actions a { width: 100%; max-width: 280px; white-space: normal; }
-  .help { min-height: 620px; margin-top: calc(-1 * var(--saathi-help-overlap)); padding-block: calc(var(--saathi-help-overlap) + 52px) 150px; }
+  .help { min-height: 620px; margin-top: 0; padding-block: 60px 150px; }
   .section-title { max-width: calc(100vw - 48px); }
   .saathi { width: auto; max-width: none; margin: calc(-1 * var(--saathi-hero-overlap)) 24px 0 16px; overflow: hidden; padding: 22px 18px; }
   .saathi-copy { max-width: 100%; }
