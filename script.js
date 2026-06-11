@@ -1,18 +1,107 @@
 const slides = [...document.querySelectorAll(".hero-slide")];
 const dots = [...document.querySelectorAll("[data-go-slide]")];
+const carouselToggle = document.querySelector("[data-carousel-toggle]");
+const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const hero = document.querySelector(".hero");
 let slideIndex = 0;
+let heroTimer = null;
+let heroPausedByUser = false;
+let heroPausedByInteraction = false;
+
+function onMotionPreferenceChange(callback) {
+  if (motionQuery.addEventListener) {
+    motionQuery.addEventListener("change", callback);
+  } else {
+    motionQuery.addListener(callback);
+  }
+}
 
 function showSlide(index) {
   slideIndex = (index + slides.length) % slides.length;
-  slides.forEach((slide, i) => slide.classList.toggle("active", i === slideIndex));
+  slides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === slideIndex);
+    slide.classList.toggle("is-before", i < slideIndex);
+    slide.classList.toggle("is-after", i > slideIndex);
+  });
   dots.forEach((dot, i) => dot.classList.toggle("active", i === slideIndex));
 }
 
+function canAutoPlayHero() {
+  return slides.length > 1 && !motionQuery.matches && !heroPausedByUser && !heroPausedByInteraction && document.visibilityState === "visible";
+}
+
+function stopHeroAutoPlay() {
+  if (!heroTimer) return;
+  window.clearInterval(heroTimer);
+  heroTimer = null;
+}
+
+function startHeroAutoPlay() {
+  stopHeroAutoPlay();
+  if (!canAutoPlayHero()) return;
+  heroTimer = window.setInterval(() => showSlide(slideIndex + 1), 5000);
+}
+
+function syncCarouselToggle() {
+  if (!carouselToggle) return;
+  carouselToggle.setAttribute("aria-label", heroPausedByUser ? "Play carousel" : "Pause carousel");
+  carouselToggle.innerHTML = heroPausedByUser
+    ? '<i data-lucide="play" aria-hidden="true"></i>'
+    : '<i data-lucide="pause" aria-hidden="true"></i>';
+  window.lucide?.createIcons();
+}
+
+function setHeroInteractionPaused(paused) {
+  heroPausedByInteraction = paused;
+  hero?.classList.toggle("is-paused", heroPausedByUser || heroPausedByInteraction);
+  if (paused) {
+    stopHeroAutoPlay();
+  } else {
+    startHeroAutoPlay();
+  }
+}
+
+function setHeroUserPaused(paused) {
+  heroPausedByUser = paused;
+  hero?.classList.toggle("is-paused", heroPausedByUser || heroPausedByInteraction);
+  syncCarouselToggle();
+  if (paused) {
+    stopHeroAutoPlay();
+  } else {
+    startHeroAutoPlay();
+  }
+}
+
 dots.forEach((dot) => {
-  dot.addEventListener("click", () => showSlide(Number(dot.dataset.goSlide)));
+  dot.addEventListener("click", () => {
+    showSlide(Number(dot.dataset.goSlide));
+    startHeroAutoPlay();
+  });
 });
 
-setInterval(() => showSlide(slideIndex + 1), 5000);
+carouselToggle?.addEventListener("click", () => setHeroUserPaused(!heroPausedByUser));
+showSlide(0);
+syncCarouselToggle();
+
+if (hero) {
+  hero.addEventListener("mouseenter", () => setHeroInteractionPaused(true));
+  hero.addEventListener("mouseleave", () => setHeroInteractionPaused(false));
+  hero.addEventListener("focusin", () => setHeroInteractionPaused(true));
+  hero.addEventListener("focusout", (event) => {
+    if (!hero.contains(event.relatedTarget)) setHeroInteractionPaused(false);
+  });
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopHeroAutoPlay();
+  } else {
+    startHeroAutoPlay();
+  }
+});
+
+onMotionPreferenceChange(startHeroAutoPlay);
+startHeroAutoPlay();
 
 document.querySelectorAll(".visit-segment button").forEach((button) => {
   button.addEventListener("click", () => {
@@ -67,29 +156,168 @@ if (faqSection && faqToggle) {
   });
 }
 
-document.querySelectorAll(".scheme-grid article .learn-link, .scheme-grid article .apply-cta").forEach((trigger) => {
+const quizView = dialog.querySelector("[data-quiz-view]");
+const detailsView = dialog.querySelector("[data-details-view]");
+const quizStepLabel = dialog.querySelector("[data-quiz-step-label]");
+const quizProgress = dialog.querySelector("[data-quiz-progress]");
+const quizQuestion = dialog.querySelector("[data-quiz-question]");
+const quizOptions = dialog.querySelector("[data-quiz-options]");
+const eligibilityResult = dialog.querySelector("[data-eligibility-result]");
+const skipQuizButton = dialog.querySelector("[data-skip-quiz]");
+const checkAgainButton = dialog.querySelector("[data-check-again]");
+const schemeProfiles = {
+  "PM Jan Dhan Yojana": "general",
+  "PM Kisan Samman Nidhi": "farmer",
+  "MUDRA Loan": "business",
+  "Atal Pension Yojana": "pension",
+  "Sukanya Samriddhi": "girl-child",
+  "PMSBY / PMJJBY": "insurance",
+  "Stand-Up India": "entrepreneur"
+};
+const quizQuestions = [
+  {
+    text: "Do you have basic KYC documents such as Aadhaar, PAN/Form 60 or address proof?",
+    options: [
+      { label: "Yes, I have them ready", score: 30 },
+      { label: "I have some documents", score: 18 },
+      { label: "Not right now", score: 6 }
+    ]
+  },
+  {
+    text: "Which profile best matches you?",
+    options: [
+      { label: "General banking customer", profile: "general" },
+      { label: "Farmer or agricultural household", profile: "farmer" },
+      { label: "Small business owner", profile: "business" },
+      { label: "Retirement planner", profile: "pension" },
+      { label: "Parent or guardian of a girl child", profile: "girl-child" },
+      { label: "Insurance cover seeker", profile: "insurance" },
+      { label: "First-time eligible entrepreneur", profile: "entrepreneur" }
+    ]
+  },
+  {
+    text: "Do you already have a bank account that can receive benefits or auto-debits?",
+    options: [
+      { label: "Yes, I have an active account", score: 30 },
+      { label: "I need help linking or updating it", score: 18 },
+      { label: "No, I need to open one", score: 10 }
+    ]
+  }
+];
+let activeSchemeCard = null;
+let quizStep = 0;
+let quizScore = 0;
+
+function getEligibilityColor(score) {
+  if (score >= 70) return "var(--success)";
+  if (score >= 45) return "var(--warning)";
+  return "var(--error)";
+}
+
+function getEligibilityLabel(score) {
+  if (score >= 70) return "Strong match";
+  if (score >= 45) return "Partial match";
+  return "Low match";
+}
+
+function renderEligibilityMeter(target, score) {
+  const color = getEligibilityColor(score);
+  target.hidden = false;
+  target.style.setProperty("--score", `${score}%`);
+  target.style.setProperty("--score-color", color);
+  target.innerHTML = `
+    <b><span>Eligibility match</span><span>${score}%</span></b>
+    <div class="eligibility-track"><span></span></div>
+    <small>${getEligibilityLabel(score)}</small>
+  `;
+}
+
+function populateSchemeDialog(card) {
+  const cardImage = card.querySelector(".scheme-media img");
+  const dialogImage = dialog.querySelector(".scheme-dialog-media img");
+  dialog.querySelector("h2").textContent = card.dataset.scheme;
+  dialog.querySelector(".scheme-detail").textContent = card.dataset.detail;
+  dialog.querySelector(".scheme-summary").textContent = card.dataset.summary;
+  if (cardImage && dialogImage) {
+    dialogImage.src = cardImage.currentSrc || cardImage.src;
+    dialogImage.alt = cardImage.alt;
+  }
+  const highlights = dialog.querySelector(".scheme-highlights");
+  highlights.innerHTML = "";
+  (card.dataset.highlights || "").split("|").filter(Boolean).forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    highlights.appendChild(li);
+  });
+}
+
+function showSchemeDetails({ skipped = false, score = null } = {}) {
+  quizView.hidden = true;
+  detailsView.hidden = false;
+  checkAgainButton.hidden = !skipped;
+  if (score === null) {
+    eligibilityResult.hidden = true;
+    return;
+  }
+  renderEligibilityMeter(eligibilityResult, score);
+  if (activeSchemeCard) {
+    activeSchemeCard.classList.add("has-eligibility");
+    renderEligibilityMeter(activeSchemeCard.querySelector(".eligibility-meter"), score);
+  }
+}
+
+function getQuestionScore(option) {
+  if (typeof option.score === "number") return option.score;
+  const expectedProfile = schemeProfiles[activeSchemeCard?.dataset.scheme] || "general";
+  return option.profile === expectedProfile ? 40 : 16;
+}
+
+function renderQuizStep() {
+  const question = quizQuestions[quizStep];
+  quizStepLabel.textContent = `Step ${quizStep + 1} of ${quizQuestions.length}`;
+  quizProgress.style.setProperty("--progress", `${((quizStep + 1) / quizQuestions.length) * 100}%`);
+  quizQuestion.textContent = question.text;
+  quizOptions.innerHTML = "";
+  question.options.forEach((option) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.innerHTML = `<span>${option.label}</span><i data-lucide="chevron-right" aria-hidden="true"></i>`;
+    button.addEventListener("click", () => {
+      quizScore += getQuestionScore(option);
+      if (quizStep < quizQuestions.length - 1) {
+        quizStep += 1;
+        renderQuizStep();
+      } else {
+        showSchemeDetails({ score: Math.min(100, quizScore) });
+      }
+      window.lucide?.createIcons();
+    });
+    quizOptions.appendChild(button);
+  });
+  window.lucide?.createIcons();
+}
+
+function startEligibilityQuiz(card) {
+  activeSchemeCard = card;
+  quizStep = 0;
+  quizScore = 0;
+  populateSchemeDialog(card);
+  detailsView.hidden = true;
+  quizView.hidden = false;
+  eligibilityResult.hidden = true;
+  renderQuizStep();
+  if (!dialog.open) dialog.showModal();
+}
+
+document.querySelectorAll(".scheme-grid article .apply-cta").forEach((trigger) => {
   trigger.addEventListener("click", (event) => {
     event.preventDefault();
-    const card = trigger.closest("article");
-    const cardImage = card.querySelector(".scheme-media img");
-    const dialogImage = dialog.querySelector(".scheme-dialog-media img");
-    dialog.querySelector("h2").textContent = card.dataset.scheme;
-    dialog.querySelector(".scheme-detail").textContent = card.dataset.detail;
-    dialog.querySelector(".scheme-summary").textContent = card.dataset.summary;
-    if (cardImage && dialogImage) {
-      dialogImage.src = cardImage.currentSrc || cardImage.src;
-      dialogImage.alt = cardImage.alt;
-    }
-    const highlights = dialog.querySelector(".scheme-highlights");
-    highlights.innerHTML = "";
-    (card.dataset.highlights || "").split("|").filter(Boolean).forEach((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      highlights.appendChild(li);
-    });
-    dialog.showModal();
+    startEligibilityQuiz(trigger.closest("article"));
   });
 });
+
+skipQuizButton.addEventListener("click", () => showSchemeDetails({ skipped: true }));
+checkAgainButton.addEventListener("click", () => startEligibilityQuiz(activeSchemeCard));
 
 document.querySelector(".close-dialog").addEventListener("click", () => dialog.close());
 
@@ -101,7 +329,13 @@ if (fabCluster && fabButton && fabPrompts) {
   fabButton.addEventListener("click", () => {
     const isOpen = fabCluster.classList.toggle("open");
     fabButton.setAttribute("aria-expanded", String(isOpen));
+    fabButton.setAttribute("aria-label", isOpen ? "Close SIA prompts" : "Open SIA prompts");
+    fabButton.querySelector(".fab-icon").innerHTML = isOpen
+      ? '<i data-lucide="x" aria-hidden="true"></i>'
+      : '<i data-lucide="sparkles" aria-hidden="true"></i>';
+    fabButton.querySelector(".fab-text").textContent = isOpen ? "Close" : "Ask SIA";
     fabPrompts.setAttribute("aria-hidden", String(!isOpen));
+    window.lucide?.createIcons();
   });
 }
 
@@ -146,14 +380,15 @@ document.querySelectorAll("form").forEach((form) => {
 });
 
 const auroraCanvas = document.querySelector(".aurora-canvas");
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (auroraCanvas) {
   const context = auroraCanvas.getContext("2d", { alpha: true });
-  const colors = ["#292075", "#00a9e0", "#075aa0"];
+  const colors = ["#280071", "#12a8e0", "#075aa0"];
   let width = 0;
   let height = 0;
   let frame = 0;
+  let auroraVisible = true;
+  let auroraAnimating = false;
 
   function resizeAurora() {
     const rect = auroraCanvas.getBoundingClientRect();
@@ -192,7 +427,11 @@ if (auroraCanvas) {
     context.fill();
   }
 
-  function drawAurora(timestamp = 0) {
+  function shouldAnimateAurora() {
+    return !motionQuery.matches && auroraVisible && document.visibilityState === "visible";
+  }
+
+  function drawAurora(timestamp = 0, scheduleNext = true) {
     const cssWidth = auroraCanvas.clientWidth;
     const cssHeight = auroraCanvas.clientHeight;
     const time = timestamp * 0.001;
@@ -201,9 +440,9 @@ if (auroraCanvas) {
     context.globalCompositeOperation = "source-over";
 
     const base = context.createLinearGradient(0, 0, cssWidth, cssHeight);
-    base.addColorStop(0, "#292075");
+    base.addColorStop(0, "#280071");
     base.addColorStop(0.48, "#075aa0");
-    base.addColorStop(1, "#00a9e0");
+    base.addColorStop(1, "#12a8e0");
     context.fillStyle = base;
     context.fillRect(0, 0, cssWidth, cssHeight);
 
@@ -219,18 +458,62 @@ if (auroraCanvas) {
     context.fillStyle = glow;
     context.fillRect(0, 0, cssWidth, cssHeight);
 
-    if (!reduceMotion) {
+    if (scheduleNext && shouldAnimateAurora()) {
       frame = requestAnimationFrame(drawAurora);
+    } else {
+      auroraAnimating = false;
+      frame = 0;
     }
+  }
+
+  function stopAurora() {
+    auroraAnimating = false;
+    if (frame) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+    }
+  }
+
+  function startAurora() {
+    if (auroraAnimating || !shouldAnimateAurora()) return;
+    auroraAnimating = true;
+    frame = requestAnimationFrame(drawAurora);
   }
 
   if (context) {
     resizeAurora();
-    drawAurora();
+    drawAurora(0, false);
+    startAurora();
     window.addEventListener("resize", () => {
       resizeAurora();
-      if (reduceMotion) drawAurora();
+      drawAurora(0, false);
+      startAurora();
     });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopAurora();
+      } else {
+        drawAurora(0, false);
+        startAurora();
+      }
+    });
+    onMotionPreferenceChange(() => {
+      stopAurora();
+      drawAurora(0, false);
+      startAurora();
+    });
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        auroraVisible = entry.isIntersecting;
+        if (auroraVisible) {
+          drawAurora(0, false);
+          startAurora();
+        } else {
+          stopAurora();
+        }
+      });
+      observer.observe(auroraCanvas);
+    }
   }
 }
 
