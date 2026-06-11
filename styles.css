@@ -56,7 +56,7 @@
   --space-section-tight: clamp(24px, 4vw, 38px);
   --space-card: clamp(20px, 3vw, 30px);
   --saathi-hero-overlap: clamp(118px, 16vw, 150px);
-  --saathi-help-overlap: clamp(146px, 15vw, 178px);
+  --saathi-help-overlap: clamp(178px, 18vw, 220px);
   --radius-panel: 20px;
   --radius-card: 12px;
   --shadow-card: 0 10px 28px rgb(63 63 63 / .07);
@@ -246,7 +246,6 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .visit-segment .selected { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 8px 20px rgb(41 32 117 / .22); }
 
 .saathi { position: relative; z-index: 5; margin-block: calc(-1 * var(--saathi-hero-overlap)) 0; display: block; width: min(1040px, calc(100% - 48px)); border: 2px solid transparent; border-radius: var(--radius-panel); padding: var(--space-card); background: linear-gradient(white, white) padding-box, var(--ai-gradient) border-box; color: var(--foreground); overflow: visible; box-shadow: 0 28px 70px rgb(63 63 63 / .16); }
-.saathi::before { content: ""; position: absolute; left: 50%; top: calc(var(--saathi-hero-overlap) - 2px); z-index: -1; width: 100vw; height: calc(100% + var(--saathi-help-overlap) + 4px); transform: translateX(-50%); background: var(--primary-purple); pointer-events: none; }
 .saathi h2 { color: var(--sbi-blue); }
 .saathi p { color: var(--muted); }
 .saathi-copy { min-width: 0; max-width: 900px; margin: 0 auto; }
@@ -518,7 +517,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .wrap { padding-inline: 16px; }
   :root {
     --saathi-hero-overlap: 108px;
-    --saathi-help-overlap: 122px;
+    --saathi-help-overlap: 150px;
   }
   .brand { width: 36px; height: 36px; }
   .brand:hover, .brand:focus-visible { width: 36px; }
@@ -542,7 +541,6 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .help { min-height: 620px; margin-top: calc(-1 * var(--saathi-help-overlap)); padding-block: calc(var(--saathi-help-overlap) + 52px) 150px; }
   .section-title { max-width: calc(100vw - 48px); }
   .saathi { width: auto; max-width: none; margin: calc(-1 * var(--saathi-hero-overlap)) 24px 0 16px; overflow: hidden; padding: 22px 18px; }
-  .saathi::before { top: calc(var(--saathi-hero-overlap) - 1px); height: calc(100% + var(--saathi-help-overlap) + 2px); }
   .saathi-copy { max-width: 100%; }
   .saathi h2 { font-size: 24px; overflow-wrap: anywhere; }
   .saathi p { overflow-wrap: anywhere; }
