@@ -331,12 +331,16 @@ const fabPrompts = document.querySelector(".fab-prompts");
 if (fabCluster && fabButton && fabPrompts) {
   fabButton.addEventListener("click", () => {
     const isOpen = fabCluster.classList.toggle("open");
+    const fabIcon = fabButton.querySelector(".fab-icon");
+    const fabText = fabButton.querySelector(".fab-text");
+    fabButton.classList.toggle("is-close", isOpen);
     fabButton.setAttribute("aria-expanded", String(isOpen));
     fabButton.setAttribute("aria-label", isOpen ? "Close SIA prompts" : "Open SIA prompts");
-    fabButton.querySelector(".fab-icon").innerHTML = isOpen
+    fabIcon.innerHTML = isOpen
       ? '<i data-lucide="x" aria-hidden="true"></i>'
       : '<i data-lucide="sparkles" aria-hidden="true"></i>';
-    fabButton.querySelector(".fab-text").textContent = "Ask SIA";
+    fabText.hidden = isOpen;
+    fabText.textContent = "Ask SIA";
     fabPrompts.setAttribute("aria-hidden", String(!isOpen));
     window.lucide?.createIcons();
   });
