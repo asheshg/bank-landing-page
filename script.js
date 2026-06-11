@@ -17,6 +17,13 @@ function onMotionPreferenceChange(callback) {
   }
 }
 
+function createIcon(name) {
+  const icon = document.createElement("i");
+  icon.setAttribute("data-lucide", name);
+  icon.setAttribute("aria-hidden", "true");
+  return icon;
+}
+
 function showSlide(index) {
   slideIndex = (index + slides.length) % slides.length;
   slides.forEach((slide, i) => {
@@ -47,9 +54,7 @@ function syncCarouselToggle() {
   if (!carouselToggles.length) return;
   carouselToggles.forEach((carouselToggle) => {
     carouselToggle.setAttribute("aria-label", heroPausedByUser ? "Play carousel" : "Pause carousel");
-    carouselToggle.innerHTML = heroPausedByUser
-      ? '<i data-lucide="play" aria-hidden="true"></i>'
-      : '<i data-lucide="pause" aria-hidden="true"></i>';
+    carouselToggle.replaceChildren(createIcon(heroPausedByUser ? "play" : "pause"));
   });
   window.lucide?.createIcons();
 }
@@ -219,11 +224,19 @@ function renderEligibilityMeter(target, score) {
   target.hidden = false;
   target.style.setProperty("--score", `${score}%`);
   target.style.setProperty("--score-color", color);
-  target.innerHTML = `
-    <b><span>${translateUI("Eligibility match")}</span><span>${score}%</span></b>
-    <div class="eligibility-track"><span></span></div>
-    <small>${getEligibilityLabel(score)}</small>
-  `;
+  const summary = document.createElement("b");
+  const summaryLabel = document.createElement("span");
+  const summaryScore = document.createElement("span");
+  const track = document.createElement("div");
+  const trackFill = document.createElement("span");
+  const label = document.createElement("small");
+  summaryLabel.textContent = translateUI("Eligibility match");
+  summaryScore.textContent = `${score}%`;
+  track.className = "eligibility-track";
+  label.textContent = getEligibilityLabel(score);
+  summary.append(summaryLabel, summaryScore);
+  track.append(trackFill);
+  target.replaceChildren(summary, track, label);
 }
 
 function populateSchemeDialog(card) {
@@ -276,7 +289,9 @@ function renderQuizStep() {
   question.options.forEach((option) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.innerHTML = `<span>${translateUI(option.label)}</span><i data-lucide="chevron-right" aria-hidden="true"></i>`;
+    const label = document.createElement("span");
+    label.textContent = translateUI(option.label);
+    button.append(label, createIcon("chevron-right"));
     button.addEventListener("click", () => {
       quizScore += getQuestionScore(option);
       if (quizStep < quizQuestions.length - 1) {
@@ -330,9 +345,7 @@ if (fabCluster && fabButton && fabPrompts) {
     fabText.classList.toggle("is-hidden", isOpen);
     fabButton.setAttribute("aria-expanded", String(isOpen));
     fabButton.setAttribute("aria-label", isOpen ? "Close SIA prompts" : "Open SIA prompts");
-    fabIcon.innerHTML = isOpen
-      ? '<i data-lucide="x" aria-hidden="true"></i>'
-      : '<i data-lucide="sparkles" aria-hidden="true"></i>';
+    fabIcon.replaceChildren(createIcon(isOpen ? "x" : "sparkles"));
     fabText.hidden = isOpen;
     fabText.textContent = isOpen ? "" : "Ask SIA";
     fabPrompts.setAttribute("aria-hidden", String(!isOpen));
@@ -740,385 +753,9 @@ try {
 }
 applyLanguage(savedLanguage);
 
-function getCardCenter(element) {
-  const { width, height } = element.getBoundingClientRect();
-  return [width / 2, height / 2];
-}
-
-function getBorderGlowEdgeProximity(element, x, y) {
-  const [centerX, centerY] = getCardCenter(element);
-  const dx = x - centerX;
-  const dy = y - centerY;
-  const kx = dx === 0 ? Infinity : centerX / Math.abs(dx);
-  const ky = dy === 0 ? Infinity : centerY / Math.abs(dy);
-  return Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
-}
-
-function getBorderGlowCursorAngle(element, x, y) {
-  const [centerX, centerY] = getCardCenter(element);
-  const dx = x - centerX;
-  const dy = y - centerY;
-  if (dx === 0 && dy === 0) return 0;
-  const degrees = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
-  return degrees < 0 ? degrees + 360 : degrees;
-}
-
-document.querySelectorAll(".border-glow-card").forEach((card) => {
-  card.addEventListener("pointermove", (event) => {
-    const rect = card.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    card.style.setProperty("--edge-proximity", `${(getBorderGlowEdgeProximity(card, x, y) * 100).toFixed(3)}`);
-    card.style.setProperty("--cursor-angle", `${getBorderGlowCursorAngle(card, x, y).toFixed(3)}deg`);
-  });
-  card.addEventListener("pointerleave", () => {
-    card.style.setProperty("--edge-proximity", "0");
-  });
-});
-
 document.querySelectorAll("form").forEach((form) => {
   form.addEventListener("submit", (event) => event.preventDefault());
 });
-
-const auroraCanvas = document.querySelector(".aurora-canvas");
-
-if (auroraCanvas) {
-  const auroraHost = auroraCanvas.closest(".help") || auroraCanvas;
-  const lineGradient = ["#280071", "#12a8e0", "#00b5ef", "#ffffff"];
-  const gl = auroraCanvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: true });
-  let frame = 0;
-  let auroraVisible = true;
-  let auroraAnimating = false;
-  let fallbackContext = null;
-  let fallbackDpr = 1;
-  const targetMouse = { x: -1000, y: -1000 };
-  const currentMouse = { x: -1000, y: -1000 };
-  const targetParallax = { x: 0, y: 0 };
-  const currentParallax = { x: 0, y: 0 };
-  let targetInfluence = 0;
-  let currentInfluence = 0;
-
-  const vertexShaderSource = `#version 300 es
-    in vec2 position;
-    void main() {
-      gl_Position = vec4(position, 0.0, 1.0);
-    }
-  `;
-
-  const fragmentShaderSource = `#version 300 es
-    precision highp float;
-
-    uniform float uTime;
-    uniform vec2 uResolution;
-    uniform vec2 uMouse;
-    uniform vec2 uParallaxOffset;
-    uniform float uBendInfluence;
-    uniform vec3 uLineGradient[4];
-
-    out vec4 fragColor;
-
-    mat2 rotate(float angle) {
-      return mat2(cos(angle), sin(angle), -sin(angle), cos(angle));
-    }
-
-    vec3 gradientColor(float t) {
-      float clamped = clamp(t, 0.0, 0.9999) * 3.0;
-      int index = int(floor(clamped));
-      float f = fract(clamped);
-      if (index == 0) return mix(uLineGradient[0], uLineGradient[1], f);
-      if (index == 1) return mix(uLineGradient[1], uLineGradient[2], f);
-      return mix(uLineGradient[2], uLineGradient[3], f);
-    }
-
-    float waveLine(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, float bendStrength) {
-      float xMovement = uTime * 0.1;
-      float amp = sin(offset + uTime * 0.2) * 0.3;
-      float y = sin(uv.x + offset + xMovement) * amp;
-
-      vec2 distanceFromMouse = screenUv - mouseUv;
-      float influence = exp(-dot(distanceFromMouse, distanceFromMouse) * 5.0);
-      y += (mouseUv.y - screenUv.y) * influence * bendStrength * uBendInfluence;
-
-      float m = uv.y - y;
-      return 0.0175 / max(abs(m) + 0.01, 0.001) + 0.01;
-    }
-
-    void main() {
-      vec2 baseUv = (2.0 * gl_FragCoord.xy - uResolution.xy) / uResolution.y;
-      baseUv.y *= -1.0;
-      baseUv += uParallaxOffset;
-      vec2 fieldUv = baseUv * vec2(0.72, 0.94);
-
-      vec2 mouseUv = (2.0 * uMouse - uResolution.xy) / uResolution.y;
-      mouseUv.y *= -1.0;
-
-      vec3 base = mix(uLineGradient[0] * 0.22, uLineGradient[1] * 0.2, smoothstep(-1.45, 1.25, baseUv.x));
-      base = mix(base, uLineGradient[2] * 0.16, smoothstep(-0.15, 1.3, baseUv.y) * 0.2);
-      vec3 color = base;
-
-      for (int i = 0; i < 20; i++) {
-        float fi = float(i);
-        float t = fi / 19.0;
-        float angle = -0.45 * log(length(fieldUv) + 1.0);
-        vec2 ruv = fieldUv * rotate(angle);
-        float line = waveLine(ruv + vec2(0.07 * fi - 0.72, -0.92), 1.5 + 0.2 * fi, baseUv, mouseUv, -0.5);
-        color += gradientColor(t) * line * 0.11;
-      }
-
-      for (int i = 0; i < 15; i++) {
-        float fi = float(i);
-        float t = fi / 14.0;
-        float angle = 0.18 * log(length(fieldUv) + 1.0);
-        vec2 ruv = fieldUv * rotate(angle);
-        float line = waveLine(ruv + vec2(0.08 * fi - 0.18, -0.08), 2.0 + 0.15 * fi, baseUv, mouseUv, -0.5);
-        color += gradientColor(t) * line * 0.3;
-      }
-
-      for (int i = 0; i < 10; i++) {
-        float fi = float(i);
-        float t = fi / 9.0;
-        float angle = -0.36 * log(length(fieldUv) + 1.0);
-        vec2 ruv = fieldUv * rotate(angle);
-        ruv.x *= -1.0;
-        float line = waveLine(ruv + vec2(0.1 * fi - 0.58, 0.42), 1.0 + 0.2 * fi, baseUv, mouseUv, -0.5);
-        color += gradientColor(t) * line * 0.08;
-      }
-
-      float vignette = smoothstep(2.08, 0.12, length(baseUv * vec2(0.72, 0.98)));
-      fragColor = vec4(color * vignette, 1.0);
-    }
-  `;
-
-  function hexToRgb(hex) {
-    const value = hex.replace("#", "");
-    const number = Number.parseInt(value, 16);
-    return [
-      ((number >> 16) & 255) / 255,
-      ((number >> 8) & 255) / 255,
-      (number & 255) / 255
-    ];
-  }
-
-  function createShader(type, source) {
-    const shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      gl.deleteShader(shader);
-      return null;
-    }
-    return shader;
-  }
-
-  function createProgram() {
-    const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
-    const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
-    if (!vertexShader || !fragmentShader) return null;
-
-    const program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-    gl.deleteShader(vertexShader);
-    gl.deleteShader(fragmentShader);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      gl.deleteProgram(program);
-      return null;
-    }
-    return program;
-  }
-
-  const auroraProgram = gl ? createProgram() : null;
-  const auroraState = auroraProgram ? (() => {
-    const buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    gl.useProgram(auroraProgram);
-
-    const positionLocation = gl.getAttribLocation(auroraProgram, "position");
-    gl.enableVertexAttribArray(positionLocation);
-    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    gl.clearColor(0, 0, 0, 0);
-
-    return {
-      positionLocation,
-      time: gl.getUniformLocation(auroraProgram, "uTime"),
-      resolution: gl.getUniformLocation(auroraProgram, "uResolution"),
-      mouse: gl.getUniformLocation(auroraProgram, "uMouse"),
-      parallaxOffset: gl.getUniformLocation(auroraProgram, "uParallaxOffset"),
-      bendInfluence: gl.getUniformLocation(auroraProgram, "uBendInfluence"),
-      lineGradient: gl.getUniformLocation(auroraProgram, "uLineGradient[0]")
-    };
-  })() : null;
-
-  function resizeAurora() {
-    const rect = auroraCanvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const width = Math.max(1, Math.floor(rect.width * dpr));
-    const height = Math.max(1, Math.floor(rect.height * dpr));
-    if (auroraCanvas.width !== width || auroraCanvas.height !== height) {
-      auroraCanvas.width = width;
-      auroraCanvas.height = height;
-    }
-    if (auroraState) {
-      gl.viewport(0, 0, width, height);
-    } else if (fallbackContext) {
-      fallbackDpr = dpr;
-      fallbackContext.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-  }
-
-  function shouldAnimateAurora() {
-    return !motionQuery.matches && auroraVisible && document.visibilityState === "visible";
-  }
-
-  function drawFallbackAurora(timestamp = 0) {
-    const cssWidth = auroraCanvas.clientWidth;
-    const cssHeight = auroraCanvas.clientHeight;
-    const time = timestamp * 0.001;
-    fallbackContext.clearRect(0, 0, cssWidth, cssHeight);
-    fallbackContext.globalCompositeOperation = "source-over";
-
-    const base = fallbackContext.createLinearGradient(0, 0, cssWidth, cssHeight);
-    base.addColorStop(0, "#280071");
-    base.addColorStop(0.66, "#280071");
-    base.addColorStop(1, "#342b86");
-    fallbackContext.fillStyle = base;
-    fallbackContext.fillRect(0, 0, cssWidth, cssHeight);
-
-    fallbackContext.globalCompositeOperation = "screen";
-    for (let layer = 0; layer < 3; layer++) {
-      const count = [20, 15, 10][layer];
-      const yBase = [0.72, 0.48, 0.28][layer] * cssHeight;
-      const alpha = [0.16, 0.24, 0.12][layer];
-      fallbackContext.lineWidth = [1.4, 1.2, 1][layer];
-      fallbackContext.globalAlpha = alpha;
-      for (let i = 0; i < count; i++) {
-        const progress = i / Math.max(count - 1, 1);
-        const stroke = fallbackContext.createLinearGradient(0, 0, cssWidth, 0);
-        stroke.addColorStop(0, "#280071");
-        stroke.addColorStop(0.48, "#12a8e0");
-        stroke.addColorStop(1, progress > 0.74 ? "#ffffff" : "#00b5ef");
-        fallbackContext.strokeStyle = stroke;
-        fallbackContext.beginPath();
-        for (let x = -16; x <= cssWidth + 16; x += 12) {
-          const p = x / cssWidth;
-          const y = yBase + i * 5 + Math.sin(p * Math.PI * 2.2 + time * 0.55 + i * 0.18 + layer) * cssHeight * 0.035;
-          if (x <= -16) fallbackContext.moveTo(x, y);
-          else fallbackContext.lineTo(x, y);
-        }
-        fallbackContext.stroke();
-      }
-    }
-    fallbackContext.globalAlpha = 1;
-    fallbackContext.setTransform(fallbackDpr, 0, 0, fallbackDpr, 0, 0);
-  }
-
-  function drawAurora(timestamp = 0, scheduleNext = true) {
-    currentMouse.x += (targetMouse.x - currentMouse.x) * 0.05;
-    currentMouse.y += (targetMouse.y - currentMouse.y) * 0.05;
-    currentParallax.x += (targetParallax.x - currentParallax.x) * 0.05;
-    currentParallax.y += (targetParallax.y - currentParallax.y) * 0.05;
-    currentInfluence += (targetInfluence - currentInfluence) * 0.05;
-
-    if (auroraState) {
-      gl.useProgram(auroraProgram);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.uniform1f(auroraState.time, timestamp * 0.001);
-      gl.uniform2f(auroraState.resolution, auroraCanvas.width, auroraCanvas.height);
-      gl.uniform2f(auroraState.mouse, currentMouse.x, currentMouse.y);
-      gl.uniform2f(auroraState.parallaxOffset, currentParallax.x, currentParallax.y);
-      gl.uniform1f(auroraState.bendInfluence, currentInfluence);
-      gl.uniform3fv(auroraState.lineGradient, lineGradient.flatMap(hexToRgb));
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-    } else {
-      drawFallbackAurora(timestamp);
-    }
-
-    if (scheduleNext && shouldAnimateAurora()) {
-      frame = requestAnimationFrame(drawAurora);
-    } else {
-      auroraAnimating = false;
-      frame = 0;
-    }
-  }
-
-  function stopAurora() {
-    auroraAnimating = false;
-    if (frame) {
-      cancelAnimationFrame(frame);
-      frame = 0;
-    }
-  }
-
-  function startAurora() {
-    if (auroraAnimating || !shouldAnimateAurora()) return;
-    auroraAnimating = true;
-    frame = requestAnimationFrame(drawAurora);
-  }
-
-  if (!auroraState) {
-    fallbackContext = auroraCanvas.getContext("2d", { alpha: true });
-  }
-
-  if (auroraState || fallbackContext) {
-    resizeAurora();
-    drawAurora(0, false);
-    startAurora();
-  }
-
-  auroraHost.addEventListener("pointermove", (event) => {
-    const rect = auroraHost.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    targetMouse.x = x * dpr;
-    targetMouse.y = (rect.height - y) * dpr;
-    targetInfluence = 1;
-    targetParallax.x = ((x - rect.width / 2) / rect.width) * 0.18;
-    targetParallax.y = (-(y - rect.height / 2) / rect.height) * 0.18;
-  });
-
-  auroraHost.addEventListener("pointerleave", () => {
-    targetInfluence = 0;
-    targetParallax.x = 0;
-    targetParallax.y = 0;
-  });
-
-  window.addEventListener("resize", () => {
-    resizeAurora();
-    drawAurora(0, false);
-    startAurora();
-  });
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      stopAurora();
-    } else {
-      drawAurora(0, false);
-      startAurora();
-    }
-  });
-  onMotionPreferenceChange(() => {
-    stopAurora();
-    drawAurora(0, false);
-    startAurora();
-  });
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(([entry]) => {
-      auroraVisible = entry.isIntersecting;
-      if (auroraVisible) {
-        drawAurora(0, false);
-        startAurora();
-      } else {
-        stopAurora();
-      }
-    });
-    observer.observe(auroraCanvas);
-  }
-}
 
 if (window.lucide) {
   window.lucide.createIcons();

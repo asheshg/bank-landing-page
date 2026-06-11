@@ -172,14 +172,8 @@
     <main>
       <section class="hero" aria-label="Featured SBI services">
         <article class="hero-slide active" data-slide="0">
-          <img src="assets/education-hero.jpeg" alt="Students celebrating their educational journey">
+          <img src="assets/education-hero-web.jpg" alt="Students celebrating their educational journey" loading="eager" fetchpriority="high">
           <div class="hero-copy">
-            <div class="dots hero-mini-controls" aria-label="Choose hero slide">
-              <button class="active" type="button" data-go-slide="0" aria-label="Go to slide 1"></button>
-              <button type="button" data-go-slide="1" aria-label="Go to slide 2"></button>
-              <button type="button" data-go-slide="2" aria-label="Go to slide 3"></button>
-              <button class="carousel-toggle icon-button" type="button" data-carousel-toggle aria-label="Pause carousel"><i data-lucide="pause" aria-hidden="true"></i></button>
-            </div>
             <p class="eyebrow">Education Loans</p>
             <h1>Fund your education <span>SBI</span>.</h1>
             <p>Compare schemes, check eligibility, calculate EMI and apply - guided every step of the way by an experience built around your decision.</p>
@@ -195,14 +189,8 @@
           </div>
         </article>
         <article class="hero-slide" data-slide="1">
-          <img src="assets/home-hero.jpg" alt="Indian family at home">
+          <img src="assets/home-hero.jpg" alt="Indian family at home" loading="lazy">
           <div class="hero-copy">
-            <div class="dots hero-mini-controls" aria-label="Choose hero slide">
-              <button class="active" type="button" data-go-slide="0" aria-label="Go to slide 1"></button>
-              <button type="button" data-go-slide="1" aria-label="Go to slide 2"></button>
-              <button type="button" data-go-slide="2" aria-label="Go to slide 3"></button>
-              <button class="carousel-toggle icon-button" type="button" data-carousel-toggle aria-label="Pause carousel"><i data-lucide="pause" aria-hidden="true"></i></button>
-            </div>
             <p class="eyebrow">Home Loans</p>
             <h1>Buy your dream home <span>with SBI</span>.</h1>
             <p>Lowest interest rates, doorstep service and approvals in days - whether you're building, buying or renovating.</p>
@@ -211,14 +199,8 @@
           </div>
         </article>
         <article class="hero-slide" data-slide="2">
-          <img src="assets/business-hero.jpg" alt="Small business owner smiling">
+          <img src="assets/business-hero.jpg" alt="Small business owner smiling" loading="lazy">
           <div class="hero-copy">
-            <div class="dots hero-mini-controls" aria-label="Choose hero slide">
-              <button class="active" type="button" data-go-slide="0" aria-label="Go to slide 1"></button>
-              <button type="button" data-go-slide="1" aria-label="Go to slide 2"></button>
-              <button type="button" data-go-slide="2" aria-label="Go to slide 3"></button>
-              <button class="carousel-toggle icon-button" type="button" data-carousel-toggle aria-label="Pause carousel"><i data-lucide="pause" aria-hidden="true"></i></button>
-            </div>
             <p class="eyebrow">MSME & Business</p>
             <h1>Grow your business <span>with SBI</span>.</h1>
             <p>Collateral-free working capital, term loans and MUDRA finance designed for India's small businesses and entrepreneurs.</p>
@@ -226,6 +208,14 @@
             <div class="stats"><strong>Rs. 10 L<small>MUDRA loan</small></strong><strong>48 hrs<small>Quick sanction</small></strong><strong>Zero<small>Collateral</small></strong></div>
           </div>
         </article>
+        <div class="hero-controls" aria-label="Choose hero slide">
+          <div class="dots">
+            <button class="active" type="button" data-go-slide="0" aria-label="Go to slide 1"></button>
+            <button type="button" data-go-slide="1" aria-label="Go to slide 2"></button>
+            <button type="button" data-go-slide="2" aria-label="Go to slide 3"></button>
+          </div>
+          <button class="carousel-toggle icon-button" type="button" data-carousel-toggle aria-label="Pause carousel"><i data-lucide="pause" aria-hidden="true"></i></button>
+        </div>
       </section>
 
       <section class="saathi wrap">
@@ -247,14 +237,13 @@
       </section>
 
       <section class="help">
-        <canvas class="aurora-canvas" aria-hidden="true"></canvas>
         <div class="wrap">
           <div class="section-title"><h2>Need help? We're here.</h2><p>Real people. Trusted answers. Available across India.</p></div>
           <div class="help-grid">
-            <article class="border-glow-card"><span class="edge-light" aria-hidden="true"></span><i data-lucide="building-2" aria-hidden="true"></i><h3>Talk to a Branch Officer</h3><p>Book a slot at your nearest branch.</p></article>
-            <article class="border-glow-card"><span class="edge-light" aria-hidden="true"></span><i data-lucide="users-round" aria-hidden="true"></i><h3>Community Support</h3><p>Connect with local guidance and support channels.</p></article>
-            <article class="border-glow-card"><span class="edge-light" aria-hidden="true"></span><i data-lucide="headphones" aria-hidden="true"></i><h3>Customer Care</h3><p>1800 1234 / 1800 2100 (toll-free)<br>customercare@sbi.co.in</p></article>
-            <article class="border-glow-card"><span class="edge-light" aria-hidden="true"></span><i data-lucide="circle-help" aria-hidden="true"></i><h3>FAQs</h3><p>Find answers for accounts, cards, loans and digital banking.</p></article>
+            <article class="support-card"><i data-lucide="building-2" aria-hidden="true"></i><h3>Talk to a Branch Officer</h3><p>Book a slot at your nearest branch.</p></article>
+            <article class="support-card"><i data-lucide="users-round" aria-hidden="true"></i><h3>Community Support</h3><p>Connect with local guidance and support channels.</p></article>
+            <article class="support-card"><i data-lucide="headphones" aria-hidden="true"></i><h3>Customer Care</h3><p>1800 1234 / 1800 2100 (toll-free)<br>customercare@sbi.co.in</p></article>
+            <article class="support-card"><i data-lucide="circle-help" aria-hidden="true"></i><h3>FAQs</h3><p>Find answers for accounts, cards, loans and digital banking.</p></article>
           </div>
         </div>
       </section>
@@ -275,31 +264,31 @@
         </div>
         <div class="scheme-grid" data-scheme-grid>
           <article class="cutout-card" data-scheme="PM Jan Dhan Yojana" data-detail="Rs. 2 lakh accident cover plus RuPay debit card" data-summary="AI summary: A simple entry-level savings account that helps first-time banking customers receive benefits, use a RuPay debit card, and access insurance cover without maintaining a minimum balance." data-highlights="Zero-balance Basic Savings Bank Deposit Account|RuPay debit card with accident insurance cover|Direct benefit transfer support for subsidies and pensions">
-            <div class="scheme-media"><img src="assets/jan-dhan.jpg" alt="PM Jan Dhan Yojana account benefits"><span>Eligibility - All citizens</span></div>
+            <div class="scheme-media"><img src="assets/jan-dhan.jpg" alt="PM Jan Dhan Yojana account benefits" loading="lazy"><span>Eligibility - All citizens</span></div>
             <div class="scheme-body"><h3>PM Jan Dhan Yojana</h3><p>Zero-balance savings account for every Indian.</p><div class="eligibility-meter" hidden></div><div class="scheme-card-actions"><button class="apply-cta" type="button">Check Eligibility</button></div></div>
           </article>
           <article class="cutout-card" data-scheme="PM Kisan Samman Nidhi" data-detail="Rs. 6,000 per year in 3 equal instalments" data-summary="AI summary: A farmer income-support scheme where eligible land-owning farmer families receive periodic payments directly into their bank accounts." data-highlights="Rs. 6,000 annual support in three instalments|Direct transfer to Aadhaar-linked bank accounts|Useful for recurring farming input expenses">
-            <div class="scheme-media"><img src="assets/pm-kisan.jpg" alt="PM Kisan Samman Nidhi farmer benefit"><span>Eligibility - Land-owning farmers</span></div>
+            <div class="scheme-media"><img src="assets/pm-kisan.jpg" alt="PM Kisan Samman Nidhi farmer benefit" loading="lazy"><span>Eligibility - Land-owning farmers</span></div>
             <div class="scheme-body"><h3>PM Kisan Samman Nidhi</h3><p>Rs. 6,000/year income support for farmer families.</p><div class="eligibility-meter" hidden></div><div class="scheme-card-actions"><button class="apply-cta" type="button">Check Eligibility</button></div></div>
           </article>
           <article class="cutout-card" data-scheme="MUDRA Loan" data-detail="Collateral-free loans from Rs. 50,000 to Rs. 10 lakh" data-summary="AI summary: A collateral-free credit option for micro and small businesses, grouped by business stage so owners can choose the right loan band." data-highlights="Shishu, Kishor and Tarun loan categories|No collateral for eligible micro enterprises|Can support working capital, equipment and expansion">
-            <div class="scheme-media"><img src="assets/mudra.jpg" alt="MUDRA Loan small business credit"><span>Eligibility - Micro enterprises</span></div>
+            <div class="scheme-media"><img src="assets/mudra-web.jpg" alt="MUDRA Loan small business credit" loading="lazy"><span>Eligibility - Micro enterprises</span></div>
             <div class="scheme-body"><h3>MUDRA Loan</h3><p>Collateral-free loans up to Rs. 10 lakh for small business.</p><div class="eligibility-meter" hidden></div><div class="scheme-card-actions"><button class="apply-cta" type="button">Check Eligibility</button></div></div>
           </article>
           <article class="cutout-card extra-scheme" data-scheme="Atal Pension Yojana" data-detail="Guaranteed pension from Rs. 1,000 to Rs. 5,000 per month after 60." data-summary="AI summary: A pension scheme for workers who want predictable monthly income after retirement, with contribution amounts based on age and target pension." data-highlights="Guaranteed pension options after age 60|Designed for citizens aged 18 to 40|Auto-debit contributions from a savings account">
-            <div class="scheme-media"><img src="assets/home-hero.jpg" alt="Atal Pension Yojana retirement planning"><span>Eligibility - Age 18-40</span></div>
+            <div class="scheme-media"><img src="assets/home-hero.jpg" alt="Atal Pension Yojana retirement planning" loading="lazy"><span>Eligibility - Age 18-40</span></div>
             <div class="scheme-body"><h3>Atal Pension Yojana</h3><p>Guaranteed pension after 60, starting Rs. 42/month.</p><div class="eligibility-meter" hidden></div><div class="scheme-card-actions"><button class="apply-cta" type="button">Check Eligibility</button></div></div>
           </article>
           <article class="cutout-card extra-scheme" data-scheme="Sukanya Samriddhi" data-detail="High-interest savings for the girl child with tax-free maturity." data-summary="AI summary: A long-term savings scheme for a girl child, helping families plan for education or future milestones through disciplined deposits." data-highlights="Account can be opened for eligible girl children|Tax benefits subject to applicable rules|Long-term savings with government-backed structure">
-            <div class="scheme-media"><img src="assets/education-hero.jpeg" alt="Sukanya Samriddhi girl child savings"><span>Eligibility - Girls below 10</span></div>
+            <div class="scheme-media"><img src="assets/education-hero-web.jpg" alt="Sukanya Samriddhi girl child savings" loading="lazy"><span>Eligibility - Girls below 10</span></div>
             <div class="scheme-body"><h3>Sukanya Samriddhi</h3><p>High-interest savings scheme for the girl child.</p><div class="eligibility-meter" hidden></div><div class="scheme-card-actions"><button class="apply-cta" type="button">Check Eligibility</button></div></div>
           </article>
           <article class="cutout-card extra-scheme" data-scheme="PMSBY / PMJJBY" data-detail="Life and accident insurance cover up to Rs. 2 lakh." data-summary="AI summary: Low-premium insurance schemes that help savings account holders add basic life or accident cover through simple annual enrolment." data-highlights="Affordable annual premium options|Life and accident cover options up to Rs. 2 lakh|Simple renewal through linked bank account">
-            <div class="scheme-media"><img src="assets/pmsby-family.png" alt="Indian family protected by PMSBY and PMJJBY insurance"><span>Eligibility - Age 18-70</span></div>
+            <div class="scheme-media"><img src="assets/pmsby-family.jpg" alt="Indian family protected by PMSBY and PMJJBY insurance" loading="lazy"><span>Eligibility - Age 18-70</span></div>
             <div class="scheme-body"><h3>PMSBY / PMJJBY</h3><p>Life and accident insurance from just Rs. 20/year.</p><div class="eligibility-meter" hidden></div><div class="scheme-card-actions"><button class="apply-cta" type="button">Check Eligibility</button></div></div>
           </article>
           <article class="cutout-card extra-scheme" data-scheme="Stand-Up India" data-detail="Composite loans from Rs. 10 lakh to Rs. 1 crore for eligible entrepreneurs." data-summary="AI summary: A business loan route for eligible first-time entrepreneurs, especially women and SC/ST applicants, to start greenfield enterprises." data-highlights="Composite loans for eligible new enterprises|Supports manufacturing, services, trading and allied activities|Branch guidance for project and documentation readiness">
-            <div class="scheme-media"><img src="assets/stand-up-india.png" alt="Stand-Up India scheme for women and SC/ST entrepreneurs"><span>Eligibility - First-time entrepreneurs</span></div>
+            <div class="scheme-media"><img src="assets/stand-up-india.jpg" alt="Stand-Up India scheme for women and SC/ST entrepreneurs" loading="lazy"><span>Eligibility - First-time entrepreneurs</span></div>
             <div class="scheme-body"><h3>Stand-Up India</h3><p>Loans for SC/ST and women entrepreneurs.</p><div class="eligibility-meter" hidden></div><div class="scheme-card-actions"><button class="apply-cta" type="button">Check Eligibility</button></div></div>
           </article>
         </div>
@@ -327,7 +316,7 @@
       </section>
 
       <section class="yono">
-        <img src="assets/yono-wallpaper.png" alt="Every tap feels personal - customised banking experience with curated products and offers">
+        <img src="assets/yono-wallpaper.jpg" alt="Every tap feels personal - customised banking experience with curated products and offers" loading="lazy">
       </section>
 
       <section class="learning wrap">
@@ -338,7 +327,7 @@
             <div class="mini-stats"><b>220+<small>Years of trust</small></b><b>50 Cr+<small>Customers served</small></b><b>22,000+<small>Branches</small></b><b>65,000+<small>ATMs & CSPs</small></b></div>
             <blockquote>"From my village to my smartphone - SBI has always been there."<span>- Lakshmi, Madurai</span></blockquote>
           </div>
-          <div class="sbi-ring-art" aria-hidden="true"><img src="assets/sbi-mark-square.png" alt=""></div>
+          <div class="sbi-ring-art" aria-hidden="true"><img src="assets/sbi-mark-square.png" alt="" loading="lazy"></div>
         </article>
       </section>
 
