@@ -149,18 +149,6 @@ schemeToggles.forEach((button) => {
   button.addEventListener("click", () => setSchemesExpanded(!schemeSection.classList.contains("expanded")));
 });
 
-const faqSection = document.querySelector(".faq");
-const faqToggle = document.querySelector("[data-faq-toggle]");
-
-if (faqSection && faqToggle) {
-  faqToggle.addEventListener("click", () => {
-    const expanded = faqSection.classList.toggle("expanded");
-    const label = faqToggle.querySelector("span");
-    if (label) label.textContent = translateUI(expanded ? "See less" : "View more");
-    faqToggle.setAttribute("aria-expanded", String(expanded));
-  });
-}
-
 const quizView = dialog.querySelector("[data-quiz-view]");
 const detailsView = dialog.querySelector("[data-details-view]");
 const quizStepLabel = dialog.querySelector("[data-quiz-step-label]");
@@ -559,8 +547,9 @@ const translationDictionary = {
     "Community Support": "समुदाय सहायता",
     "We'll call you in your preferred language.": "हम आपकी पसंदीदा भाषा में कॉल करेंगे।",
     "Connect with local guidance and support channels.": "स्थानीय मार्गदर्शन और सहायता चैनलों से जुड़ें।",
-    "1800 1234 / 1800 2100 (toll-free)": "1800 1234 / 1800 2100 (टोल-फ्री)",
-    "Email Support": "ईमेल सहायता",
+    "1800 1234 / 1800 2100 (toll-free)\ncustomercare@sbi.co.in": "1800 1234 / 1800 2100 (टोल-फ्री)\ncustomercare@sbi.co.in",
+    "FAQs": "अक्सर पूछे जाने वाले प्रश्न",
+    "Find answers for accounts, cards, loans and digital banking.": "खातों, कार्ड, ऋण और डिजिटल बैंकिंग के उत्तर पाएं।",
     "I am visiting this website for the first time": "मैं पहली बार इस वेबसाइट पर आया/आई हूं",
     "I have visited this website before": "मैं पहले भी इस वेबसाइट पर आ चुका/चुकी हूं",
     "Government schemes made simple": "सरकारी योजनाएं आसान भाषा में",
