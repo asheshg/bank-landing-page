@@ -240,7 +240,7 @@ summary:focus-visible {
 .stats strong + strong { border-left: 1px solid var(--grey-30); }
 .stats small { display: block; color: var(--muted); font-size: 11px; margin-top: 3px; font-weight: 500; }
 .dots { display: inline-flex; align-items: center; gap: 6px; }
-.hero-controls { position: absolute; z-index: 3; left: max(24px, calc((100vw - 1280px) / 2 + 64px)); top: clamp(138px, 18vw, 184px); display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; background: rgb(0 0 0 / .22); padding: 8px 10px; backdrop-filter: blur(8px); }
+.hero-controls { display: inline-flex; align-items: center; gap: 10px; width: fit-content; margin-bottom: 14px; border-radius: 999px; background: rgb(0 0 0 / .22); padding: 8px 10px; backdrop-filter: blur(8px); }
 .dots button { width: 6px; height: 6px; border-radius: 999px; background: rgb(255 255 255 / .5); transition: width 180ms var(--ease-standard), background 180ms var(--ease-standard); }
 .dots button.active { width: 18px; background: white; }
 .carousel-toggle { width: 24px; height: 24px; background: transparent; color: white; box-shadow: none; }
@@ -490,7 +490,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .nav-card { min-height: 124px; }
   .nav-card h3 { font-size: 18px; }
   .hero-copy { left: 24px; right: 24px; }
-  .hero-controls { left: 24px; top: 130px; right: auto; }
+  .hero-controls { margin-bottom: 14px; }
   .hero-slide::after { background: rgb(0 0 0 / .62); }
   .visit-choice, .saathi, .scheme-grid, .locator, .why-sbi, .yono, .footer-grid { grid-template-columns: 1fr; }
   .scheme-grid, .help-grid, .footer-links { grid-template-columns: repeat(2, 1fr); }
@@ -523,7 +523,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .hero-copy { left: 24px; right: auto; width: min(312px, calc(100vw - 48px)); max-width: none; overflow: visible; }
   .hero h1 { font-size: 26px; max-width: 100%; }
   .hero-copy p:not(.eyebrow) { font-size: 15px; max-width: 100%; overflow-wrap: anywhere; }
-  .hero-controls { left: 24px; top: 112px; padding: 7px 9px; }
+  .hero-controls { margin-bottom: 12px; padding: 7px 9px; }
   .actions { align-items: stretch; }
   .actions a { width: 100%; max-width: 280px; white-space: normal; }
   .help { min-height: 470px; margin-top: calc(-1 * var(--saathi-help-overlap)); padding-block: calc(var(--saathi-help-overlap) + 40px) 88px; }
