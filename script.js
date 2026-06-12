@@ -753,6 +753,138 @@ try {
 }
 applyLanguage(savedLanguage);
 
+const softAuroraCanvas = document.querySelector(".soft-aurora-canvas");
+
+if (softAuroraCanvas) {
+  const helpSection = softAuroraCanvas.closest(".help");
+  const ctx = softAuroraCanvas.getContext("2d", { alpha: true });
+  const colors = ["#292075", "#280071", "#00a9e0", "#12a8e0", "#ffd100"];
+  const mouse = { x: 0.5, y: 0.5 };
+  const easedMouse = { x: 0.5, y: 0.5 };
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let frameId = null;
+  let isVisible = true;
+
+  function hexToRgba(hex, alpha) {
+    const value = hex.replace("#", "");
+    const r = parseInt(value.slice(0, 2), 16);
+    const g = parseInt(value.slice(2, 4), 16);
+    const b = parseInt(value.slice(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  function resizeSoftAurora() {
+    const rect = helpSection.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    width = Math.max(1, Math.round(rect.width));
+    height = Math.max(1, Math.round(rect.height));
+    softAuroraCanvas.width = Math.round(width * dpr);
+    softAuroraCanvas.height = Math.round(height * dpr);
+    softAuroraCanvas.style.width = `${width}px`;
+    softAuroraCanvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function drawSoftBand(time, layer, color, alpha, yOffset, amplitude) {
+    const phase = time * (0.00018 + layer * 0.00004);
+    const mouseShiftX = (easedMouse.x - 0.5) * 90;
+    const mouseShiftY = (easedMouse.y - 0.5) * 56;
+    const top = height * yOffset + mouseShiftY * (0.45 + layer * 0.12);
+    const band = new Path2D();
+    band.moveTo(-40, top);
+
+    for (let x = -40; x <= width + 40; x += 28) {
+      const waveA = Math.sin(x * (0.006 + layer * 0.0009) + phase * 12 + layer * 1.9);
+      const waveB = Math.cos(x * (0.012 + layer * 0.0011) - phase * 9);
+      const y = top + waveA * amplitude + waveB * (amplitude * 0.46) + mouseShiftX * (0.1 + layer * 0.03);
+      band.lineTo(x, y);
+    }
+
+    band.lineTo(width + 40, height + 60);
+    band.lineTo(-40, height + 60);
+    band.closePath();
+
+    const gradient = ctx.createLinearGradient(0, Math.max(0, top - amplitude * 2), 0, height);
+    gradient.addColorStop(0, hexToRgba(color, 0));
+    gradient.addColorStop(0.25, hexToRgba(color, alpha));
+    gradient.addColorStop(0.58, hexToRgba(color, 0.14));
+    gradient.addColorStop(1, hexToRgba(color, 0));
+    ctx.fillStyle = gradient;
+    ctx.fill(band);
+  }
+
+  function drawSoftAurora(time = 0) {
+    if (!isVisible || motionQuery.matches) return;
+    easedMouse.x += (mouse.x - easedMouse.x) * 0.045;
+    easedMouse.y += (mouse.y - easedMouse.y) * 0.045;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "#280071";
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = "screen";
+    drawSoftBand(time, 0, colors[2], 0.4, 0.18, 54);
+    drawSoftBand(time, 1, colors[3], 0.32, 0.36, 82);
+    drawSoftBand(time, 2, colors[0], 0.45, 0.52, 96);
+    drawSoftBand(time, 3, colors[4], 0.14, 0.68, 66);
+    ctx.globalCompositeOperation = "source-over";
+
+    const vignette = ctx.createRadialGradient(width * 0.5, height * 0.28, height * 0.05, width * 0.5, height * 0.36, Math.max(width, height) * 0.72);
+    vignette.addColorStop(0, "rgba(255,255,255,0.05)");
+    vignette.addColorStop(0.42, "rgba(40,0,113,0.18)");
+    vignette.addColorStop(1, "rgba(0,0,0,0.36)");
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, width, height);
+    frameId = window.requestAnimationFrame(drawSoftAurora);
+  }
+
+  function startSoftAurora() {
+    window.cancelAnimationFrame(frameId);
+    if (!motionQuery.matches) frameId = window.requestAnimationFrame(drawSoftAurora);
+  }
+
+  function stopSoftAurora() {
+    window.cancelAnimationFrame(frameId);
+    frameId = null;
+  }
+
+  helpSection.addEventListener("pointermove", (event) => {
+    const rect = helpSection.getBoundingClientRect();
+    mouse.x = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+    mouse.y = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
+  });
+  helpSection.addEventListener("pointerleave", () => {
+    mouse.x = 0.5;
+    mouse.y = 0.5;
+  });
+  window.addEventListener("resize", () => {
+    resizeSoftAurora();
+    startSoftAurora();
+  });
+  onMotionPreferenceChange(() => {
+    if (motionQuery.matches) {
+      stopSoftAurora();
+      ctx.clearRect(0, 0, width, height);
+    } else {
+      startSoftAurora();
+    }
+  });
+
+  if ("IntersectionObserver" in window) {
+    const auroraObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) startSoftAurora();
+      else stopSoftAurora();
+    });
+    auroraObserver.observe(helpSection);
+  }
+
+  resizeSoftAurora();
+  startSoftAurora();
+}
+
 document.querySelectorAll("form").forEach((form) => {
   form.addEventListener("submit", (event) => event.preventDefault());
 });
