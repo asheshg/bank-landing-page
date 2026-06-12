@@ -266,8 +266,8 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .saathi .prompt-row { margin-top: 26px; }
 .prompt-row input, .locator-search input { flex: 1; border: 1px solid var(--line); background: var(--grey-10); border-radius: 14px; min-height: 48px; padding: 0 14px; }
 .prompt-row button, .locator-search button { border-radius: 12px; background: var(--sbi-blue); color: white; padding: 0 16px; }
-.ai-search-row { position: relative; align-items: center; gap: 0; width: min(820px, 100%); min-width: 0; margin-inline: auto; border: 1px solid transparent; border-radius: 999px; background: linear-gradient(white, white) padding-box, linear-gradient(94deg, rgb(18 168 224 / .72), rgb(41 32 117 / .32) 48%, rgb(255 209 0 / .5)) border-box; padding: 7px; box-shadow: 0 16px 38px rgb(18 168 224 / .13), 0 6px 18px rgb(41 32 117 / .08); }
-.ai-search-row::before { content: ""; position: absolute; inset: 7px; z-index: 0; border-radius: inherit; background: white; pointer-events: none; }
+.ai-search-row { position: relative; align-items: center; gap: 0; width: min(820px, 100%); min-width: 0; margin-inline: auto; border: 2px solid transparent; border-radius: 999px; background: linear-gradient(white, white) padding-box, linear-gradient(96deg, var(--sbi-cyan), var(--sbi-indigo) 52%, var(--sbi-yellow)) border-box; padding: 6px; box-shadow: 0 18px 42px rgb(18 168 224 / .14), 0 6px 18px rgb(41 32 117 / .08); }
+.ai-search-row::before { content: ""; position: absolute; inset: 6px; z-index: 0; border-radius: inherit; background: white; pointer-events: none; }
 .ai-search-row img { display: none; }
 .ai-search-row input { position: relative; z-index: 1; min-height: 58px; border: 0; background: transparent; border-radius: 999px; padding: 0 128px 0 24px; outline: none; box-shadow: none; font-size: 17px; }
 .ai-search-row input::placeholder { color: rgb(116 116 116 / .82); }
@@ -277,21 +277,6 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .ai-search-row .saathi-voice:hover, .ai-search-row .saathi-voice:focus-visible { background: var(--primary-blue-20); color: var(--sbi-blue); }
 .ai-search-row .saathi-ask:hover, .ai-search-row .saathi-ask:focus-visible { filter: brightness(1.06); }
 .ai-search-row .saathi-ask .lucide { width: 18px; height: 18px; }
-.sia-mascot { position: absolute; left: 68px; top: -63px; width: 118px; height: 86px; z-index: -1; pointer-events: none; }
-.sia-mascot svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 10px 16px rgb(41 32 117 / .16)); }
-.sia-body-shadow { fill: rgb(41 32 117 / .08); }
-.sia-body { fill: #ffd100; stroke: #292075; stroke-width: 1.2; }
-.sia-yellow-crest, .sia-beak { fill: #ffdf45; stroke: #292075; stroke-width: 1; }
-.sia-side-fin { fill: none; stroke: #1b1b1d; stroke-width: 8; stroke-linecap: round; }
-.sia-eye-left, .sia-eye-right { fill: #111827; }
-.sia-lens { fill: rgb(255 255 255 / .88); stroke: #292075; stroke-width: 1.2; }
-.sia-lens-inner { fill: rgb(237 249 253 / .9); stroke: rgb(41 32 117 / .45); stroke-width: 1; }
-.sia-lens-shine { fill: none; stroke: white; stroke-width: 4; stroke-linecap: round; opacity: .86; }
-.sia-headband { fill: none; stroke: #dbeff7; stroke-width: 8; stroke-linecap: round; opacity: .95; }
-.sia-handle { fill: none; stroke: #292075; stroke-width: 5; stroke-linecap: round; }
-.sia-arm { fill: none; stroke: #111827; stroke-width: 5; stroke-linecap: round; }
-.sia-prop { fill: white; stroke: #292075; stroke-width: 1; }
-.sia-prop-hub { fill: #111827; }
 .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
 .chips button { text-align: left; background: white; border: 1px solid var(--primary-blue-20); border-radius: 999px; padding: 9px 13px; color: var(--sbi-blue); box-shadow: none; }
 
@@ -556,7 +541,6 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .ai-search-row .saathi-voice { right: 48px; width: 36px; min-width: 36px; }
   .ai-search-row .saathi-ask { right: 7px; width: 36px; min-width: 36px; }
   .ai-search-row .saathi-ask .lucide { width: 16px; height: 16px; }
-  .sia-mascot { left: 20px; top: -50px; width: 96px; height: 72px; }
   .stats { grid-template-columns: 1fr; }
   .visit-segment { grid-template-columns: 1fr; border-radius: 18px; }
   .visit-segment button { min-height: 52px; border-radius: 14px; padding-inline: 14px; font-size: 14px; }
