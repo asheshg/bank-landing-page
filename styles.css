@@ -266,15 +266,25 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
 .saathi .prompt-row { margin-top: 26px; }
 .prompt-row input, .locator-search input { flex: 1; border: 1px solid var(--line); background: var(--grey-10); border-radius: 14px; min-height: 48px; padding: 0 14px; }
 .prompt-row button, .locator-search button { border-radius: 12px; background: var(--sbi-blue); color: white; padding: 0 16px; }
-.ai-search-row { position: relative; align-items: center; gap: 0; width: min(740px, 100%); min-width: 0; margin-inline: auto; border: 1px solid var(--primary-blue-20); border-radius: 999px; background: var(--surface-soft-blue); padding: 6px; box-shadow: var(--shadow-resting); }
+.ai-search-row { position: relative; align-items: center; gap: 0; width: min(820px, 100%); min-width: 0; margin-inline: auto; border: 1px solid transparent; border-radius: 999px; background: linear-gradient(white, white) padding-box, linear-gradient(94deg, rgb(18 168 224 / .72), rgb(41 32 117 / .32) 48%, rgb(255 209 0 / .5)) border-box; padding: 7px; box-shadow: 0 16px 38px rgb(18 168 224 / .13), 0 6px 18px rgb(41 32 117 / .08); }
 .ai-search-row img { display: none; }
-.ai-search-row input { min-height: 54px; border: 0; background: white; border-radius: 999px; padding: 0 124px 0 22px; outline: none; box-shadow: inset 0 0 0 1px rgb(202 238 248 / .85); }
-.ai-search-row input::placeholder { color: var(--muted); }
+.ai-search-row input { min-height: 58px; border: 0; background: white; border-radius: 999px; padding: 0 128px 0 24px; outline: none; box-shadow: none; font-size: 17px; }
+.ai-search-row input::placeholder { color: rgb(116 116 116 / .82); }
 .ai-search-row button { position: absolute; top: 50%; transform: translateY(-50%); height: 42px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; font-weight: 800; }
-.ai-search-row .saathi-voice { right: 62px; width: 42px; min-width: 42px; padding: 0; background: transparent; color: var(--primary-purple); }
-.ai-search-row .saathi-ask { right: 10px; width: 42px; min-width: 42px; border: 0; background: var(--primary-purple); color: white; padding: 0; box-shadow: 0 10px 24px rgb(40 0 113 / .22); }
-.ai-search-row .saathi-ask:hover, .ai-search-row .saathi-ask:focus-visible { background: var(--primary-purple-80); }
+.ai-search-row .saathi-voice { right: 62px; width: 42px; min-width: 42px; padding: 0; background: var(--primary-blue-10); color: var(--primary-purple); box-shadow: inset 0 0 0 1px rgb(202 238 248 / .9); }
+.ai-search-row .saathi-ask { right: 10px; width: 42px; min-width: 42px; border: 0; background: var(--ai-gradient); color: white; padding: 0; box-shadow: 0 10px 24px rgb(0 169 224 / .24); }
+.ai-search-row .saathi-voice:hover, .ai-search-row .saathi-voice:focus-visible { background: var(--primary-blue-20); color: var(--sbi-blue); }
+.ai-search-row .saathi-ask:hover, .ai-search-row .saathi-ask:focus-visible { filter: brightness(1.06); }
 .ai-search-row .saathi-ask .lucide { width: 18px; height: 18px; }
+.sia-mascot { position: absolute; left: 74px; top: -43px; width: 88px; height: 70px; z-index: -1; pointer-events: none; }
+.sia-mascot svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 8px 14px rgb(41 32 117 / .16)); }
+.sia-face { fill: #ffd100; stroke: #292075; stroke-width: 1.4; }
+.sia-tail, .sia-arm, .sia-smile { fill: none; stroke: #292075; stroke-width: 4; stroke-linecap: round; }
+.sia-tail { stroke: #ffd100; stroke-width: 8; }
+.sia-headband { fill: none; stroke: #292075; stroke-width: 3; stroke-linecap: round; }
+.sia-lens { fill: rgb(237 249 253 / .95); stroke: #292075; stroke-width: 1.3; }
+.sia-eye { fill: #292075; }
+.sia-spark { fill: #00a9e0; }
 .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
 .chips button { text-align: left; background: white; border: 1px solid var(--primary-blue-20); border-radius: 999px; padding: 9px 13px; color: var(--sbi-blue); box-shadow: none; }
 
@@ -539,6 +549,7 @@ p { color: var(--muted); line-height: 1.65; margin-block: 0; }
   .ai-search-row .saathi-voice { right: 48px; width: 36px; min-width: 36px; }
   .ai-search-row .saathi-ask { right: 7px; width: 36px; min-width: 36px; }
   .ai-search-row .saathi-ask .lucide { width: 16px; height: 16px; }
+  .sia-mascot { left: 28px; top: -34px; width: 70px; height: 58px; }
   .stats { grid-template-columns: 1fr; }
   .visit-segment { grid-template-columns: 1fr; border-radius: 18px; }
   .visit-segment button { min-height: 52px; border-radius: 14px; padding-inline: 14px; font-size: 14px; }
